@@ -6,9 +6,9 @@
   tasks:
     - name: Install apache2
       apt:
-        name: apache2
+        name: apache
         state: present
-        
+
     - name: Install PHP
       apt:
         name: php8.1
