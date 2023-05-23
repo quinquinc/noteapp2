@@ -17,7 +17,7 @@
 
     - name: Install Python
       apt:
-        name: python
+        name: python3
         state: present
 
     - name: Install Git
