@@ -10,7 +10,7 @@ pipeline {
           doGenerateSubmoduleConfigurations: false, 
           extensions: [], 
           submoduleCfg: [], 
-          userRemoteConfigs: [[url: 'https://github.com/quinquinc/noteapp.git']]
+          userRemoteConfigs: [[url: 'https://github.com/quinquinc/noteapp2.git']]
         ])
       }
     }    
