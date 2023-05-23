@@ -5,6 +5,7 @@
 
   tasks:
     - name: Install apache2
+      update_cache: true
       apt:
         name: apache
         state: present
