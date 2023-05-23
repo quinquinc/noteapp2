@@ -1,0 +1,24 @@
+---
+- name: Deploy and Run App
+  hosts: web
+  become: true
+
+  tasks:
+    - name: Clone Git
+      git:
+        repo: https://github.com/simonLongatte/Projectwarwaitcap.git
+        version: development
+        dest: /home/admin
+
+    - name: Installation module python
+      pip:
+        requirements: /Projet/requirements.txt
+
+    - name: Run the application
+      command: python /Projet/AppPython/Setupwithcol.py
+
+    - name: pause pour intervention utilisateur
+      pause:
+        prompt: "Please perform the necessary database import steps. Press Enter to continue when done."
+
+    
