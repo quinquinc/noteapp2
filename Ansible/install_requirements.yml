@@ -1,0 +1,25 @@
+---
+- name: Install PHP, Python, Git, Pip
+  hosts: web
+  become: true
+
+  tasks:
+    - name: Install PHP
+      apt:
+        name: php
+        state: present
+
+    - name: Install Python
+      apt:
+        name: python
+        state: present
+
+    - name: Install Git
+      apt:
+        name: git
+        state: present
+
+    - name: Install Pip
+      apt:
+        name: python-pip
+        state: present
