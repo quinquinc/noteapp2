@@ -7,7 +7,7 @@
     - name: Install apache2
       apt:
         update_cache: true
-        name: apache
+        name: apache2
         state: present
 
     - name: Install PHP
