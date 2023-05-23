@@ -12,12 +12,7 @@
 
     - name: Install PHP
       apt:
-        name: php8.1
-        state: present
-
-    - name: Install libapache2-mod-php8.1
-      apt:
-        name: libapache2-mod-php8.1
+        name: php
         state: present
 
     - name: Install Python
