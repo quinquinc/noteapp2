@@ -23,8 +23,4 @@
     - name: Install Pip
       apt:
         name: pip
-<<<<<<< HEAD
         state: present
-=======
-        state: present
->>>>>>> d16e5d05567f5dc4f17f902b239841978f669f6f
