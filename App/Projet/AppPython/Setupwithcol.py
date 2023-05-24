@@ -96,36 +96,55 @@ class Setup(CTk):
     def quit(self) :
         self.destroy()
 
-    def warwait(self):
-        ## Warning messagebox, if the user continues, the former database will be deleted, this application is only used to configure a new db with a new excel.
-        ok = tk.messagebox.askokcancel(title="Warning", message="If you continue, the former database'll be deleted. \nKeep going ?")
-        if ok:  
-            ## if user pressed ok, let him chose the excel he want, and save absolute path to filename
-            filename = filedialog.askopenfilename()
-            if filename == "":
-                pass
-            elif filename[-5:] == ".xlsx": ## verify if user openned an excel file
-                ## now, let the readExcel collect everything inside the excel into a dictionnary, then it'll be easier to put it into database. 
-                self.readExcel(filename,"ww")
-            else:
-                tk.messagebox.showerror(title="Error", message="You can't open a non-excel file\nrequire '.xlsx' extension.")
 
-    def skillsMatrix(self):
-        ## Warning messagebox, if the user continues, the former database will be deleted, this application is only used to configure a new db with a new excel.
-        ok = tk.messagebox.askokcancel(title="Warning", message="If you continue, the former database'll be deleted. \nKeep going ?")
-        if ok:  
-            ## if user pressed ok, let him chose the excel he want, and save absolute path to filename
-            try:
-                filename = filedialog.askopenfilename()
-                if filename == "":
-                    pass
-                elif filename[-5:] == ".xlsx": ## verify if user openned an excel file
-                    ## now, let the readExcel collect everything inside the excel into a dictionnary, then it'll be easier to put it into database. 
-                    self.readExcel(filename,"sm")
-                else:
-                    tk.messagebox.showerror(title="Error", message="You can't open a non-excel file\nrequire '.xlsx' extension.")
-            except PermissionError as e:
-                tk.messagebox.showerror(title="Error", message="You can't do it if the excel file is already running.")
+    def warwait(self, filename):
+        if filename == "":
+            return
+        elif filename[-5:] == ".xlsx":
+            self.readExcel(filename, "ww")
+        else:
+            tk.messagebox.showerror(title="Error", message="You can't open a non-excel file\nrequire '.xlsx' extension.")
+        warwait_file = "../Wait_Room_2023.xlsx"    
+        self.warwait(warwait_file)
+    def skillsMatrix(self, filename):
+        if filename == "":
+            return
+        elif filename[-5:] == ".xlsx":
+            self.readExcel(filename, "sm")
+        else:
+            tk.messagebox.showerror(title="Error", message="You can't open a non-excel file\nrequire '.xlsx' extension.")
+        skillsMatrix_file = "../Matrice_des_competences_(1).xlsx"    
+        self.skillsMatrix(skillsMatrix_file)
+    # def warwait(self):
+    #     ## Warning messagebox, if the user continues, the former database will be deleted, this application is only used to configure a new db with a new excel.
+    #     ok = tk.messagebox.askokcancel(title="Warning", message="If you continue, the former database'll be deleted. \nKeep going ?")
+    #     if ok:  
+    #         ## if user pressed ok, let him chose the excel he want, and save absolute path to filename
+    #         filename = filedialog.askopenfilename()
+    #         if filename == "":
+    #             pass
+    #         elif filename[-5:] == ".xlsx": ## verify if user openned an excel file
+    #             ## now, let the readExcel collect everything inside the excel into a dictionnary, then it'll be easier to put it into database. 
+    #             self.readExcel(filename,"ww")
+    #         else:
+    #             tk.messagebox.showerror(title="Error", message="You can't open a non-excel file\nrequire '.xlsx' extension.")
+
+    # def skillsMatrix(self):
+    #     ## Warning messagebox, if the user continues, the former database will be deleted, this application is only used to configure a new db with a new excel.
+    #     ok = tk.messagebox.askokcancel(title="Warning", message="If you continue, the former database'll be deleted. \nKeep going ?")
+    #     if ok:  
+    #         ## if user pressed ok, let him chose the excel he want, and save absolute path to filename
+    #         try:
+    #             filename = filedialog.askopenfilename()
+    #             if filename == "":
+    #                 pass
+    #             elif filename[-5:] == ".xlsx": ## verify if user openned an excel file
+    #                 ## now, let the readExcel collect everything inside the excel into a dictionnary, then it'll be easier to put it into database. 
+    #                 self.readExcel(filename,"sm")
+    #             else:
+    #                 tk.messagebox.showerror(title="Error", message="You can't open a non-excel file\nrequire '.xlsx' extension.")
+    #         except PermissionError as e:
+    #             tk.messagebox.showerror(title="Error", message="You can't do it if the excel file is already running.")
 
     def readExcel(self, path_to_excel,_type):
         # This method is now useless im gonna delete it
