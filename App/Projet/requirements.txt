@@ -2,3 +2,4 @@ python-time
 tqdm
 pandas
 openpyxl
+numpy
