@@ -21,13 +21,15 @@
       command: pip3 install -r /home/admin/app/App/Projet/requirements.txt
         # requirements: /home/admin/app/App/Projet/requirements.txt
         # extra_args: -r
-
+    - name: Installation module php apache2
+      command: apt install libapache2-mod-php
+      
     - name: activer php 
       command: a2enmod php
 
     - name: restart apache2
       command: service apache2 restart
-      
+
     - name: Run the application
       command: python3 /home/admin/app/App/Projet/AppPython/Setupwithcol.py
 
