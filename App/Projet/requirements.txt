@@ -1,0 +1,7 @@
+tkinter
+customtkinter
+time
+tqdm
+pandas
+openpyxl
+mysql
