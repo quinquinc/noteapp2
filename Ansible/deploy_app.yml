@@ -8,14 +8,14 @@
       git:
         repo: https://github.com/quinquinc/noteapp2.git
         version: development
-        dest: /home/admin
+        dest: /home/admin/app
 
     - name: Installation module python
       pip:
         requirements: /Projet/requirements.txt
 
     - name: Run the application
-      command: python /Projet/AppPython/Setupwithcol.py
+      command: python app/Projet/AppPython/Setupwithcol.py
 
     - name: pause pour intervention utilisateur
       pause:
