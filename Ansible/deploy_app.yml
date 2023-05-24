@@ -9,11 +9,11 @@
         repo: https://github.com/quinquinc/noteapp2.git
         dest: /home/admin/app
     - name: Installation tkinter
-      command: apt-get install python3-tk
+      command: apt-get -y install python3-tk
 
     - name: Installation customtkinter
       command: pip3 install customtkinter
-      
+
     - name: Installation module python
       command: pip3 install -r /home/admin/app/App/Projet/requirements.txt
         # requirements: /home/admin/app/App/Projet/requirements.txt
