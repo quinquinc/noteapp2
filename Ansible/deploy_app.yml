@@ -11,10 +11,11 @@
 
     - name: Installation module python
       pip:
-        requirements: /Projet/requirements.txt
+        requirements: /home/admin/app/App/Projet/requirements.txt
+        extra_args: -r
 
     - name: Run the application
-      command: python app/Projet/AppPython/Setupwithcol.py
+      command: python /home/admin/app/App/Projet/AppPython/Setupwithcol.py
 
     - name: pause pour intervention utilisateur
       pause:
