@@ -25,7 +25,7 @@
       command: apt install libapache2-mod-php7.4
 
     - name: activer php 
-      command: a2enmod php
+      command: a2enmod php7.4
 
     - name: restart apache2
       command: service apache2 restart
