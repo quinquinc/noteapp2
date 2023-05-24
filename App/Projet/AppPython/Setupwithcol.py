@@ -126,6 +126,6 @@ def fillDB(self, path_to_excel, _type):
     # Fin warwait
 
 # Exemple d'utilisation
-path_to_excel = "../Wait_Room_2023.xlsx"
-_type = "ww"
-fillDB(path_to_excel, _type)
+# path_to_excel = "../Wait_Room_2023.xlsx"
+# _type = "ww"
+# fillDB(path_to_excel, _type)
