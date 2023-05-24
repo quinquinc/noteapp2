@@ -123,11 +123,6 @@ def fillDB(self, path_to_excel, _type):
             cursor.close()
             database.close()
 
-        except FileNotFoundError as e:
-            raise FileNotFoundError("Can't find the file, please check the path.")
-        except Exception as e:
-            raise Exception("Error occurred: {}".format(e))
-
     # Fin warwait
 
 # Exemple d'utilisation
