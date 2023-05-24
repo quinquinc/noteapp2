@@ -14,6 +14,9 @@
     - name: Installation customtkinter
       command: pip3 install customtkinter
 
+    - name: Installation Mysql Python
+      command: pip3 install mysql-connector-python --index-url=http://pypi.python.org/simple/
+      
     - name: Installation module python
       command: pip3 install -r /home/admin/app/App/Projet/requirements.txt
         # requirements: /home/admin/app/App/Projet/requirements.txt

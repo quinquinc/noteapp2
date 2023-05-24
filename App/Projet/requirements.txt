@@ -2,4 +2,3 @@ python-time
 tqdm
 pandas
 openpyxl
-MySQL-python
