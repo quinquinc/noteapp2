@@ -23,7 +23,7 @@
         # extra_args: -r
 
     - name: Run the application
-      command: python /home/admin/app/App/Projet/AppPython/Setupwithcol.py
+      command: python3 /home/admin/app/App/Projet/AppPython/Setupwithcol.py
 
     - name: pause pour intervention utilisateur
       pause:
