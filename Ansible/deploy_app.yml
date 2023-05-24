@@ -22,8 +22,8 @@
         # requirements: /home/admin/app/App/Projet/requirements.txt
         # extra_args: -r
     - name: Installation module php apache2
-      command: apt install libapache2-mod-php
-      
+      command: apt install libapache2-mod-php7.4
+
     - name: activer php 
       command: a2enmod php
 
