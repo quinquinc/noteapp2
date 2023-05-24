@@ -6,7 +6,7 @@
   tasks:
     - name: Clone Git
       git:
-        repo: https://github.com/simonLongatte/Projectwarwaitcap.git
+        repo: https://github.com/quinquinc/noteapp2.git
         version: development
         dest: /home/admin
 
@@ -19,6 +19,6 @@
 
     - name: pause pour intervention utilisateur
       pause:
-        prompt: "Please perform the necessary database import steps. Press Enter to continue when done."
+        prompt: "Faire ce qui est demandé."
 
     
