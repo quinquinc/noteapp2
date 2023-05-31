@@ -9,7 +9,7 @@ from tqdm import tqdm
 def fillDB(self, path_to_excel, _type):
     # La warwait
     
-    self.HOST="10.0.1.49"
+    self.HOST="10.0.1.238"
     self.DATABASE=["cis_nord_warwait","skillmatrix"]
     self.USER="admin"
     self.PASSWORD="clecle0202."
