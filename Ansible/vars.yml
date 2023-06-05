@@ -1,0 +1,3 @@
+mysql_root_password: "{{ lookup('env', 'MYSQL_ROOT_PASSWORD') }}"
+mysql_user: "{{ lookup('env', 'MYSQL_USER') }}"
+mysql_password: "{{ lookup('env', 'MYSQL_PASSWORD') }}"

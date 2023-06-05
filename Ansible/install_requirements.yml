@@ -1,5 +1,5 @@
 ---
-- name: Install PHP, Python, Git, Pip
+- name: Install PHP, Python, Git, Pip...
   hosts: web
   become: true
 
@@ -10,17 +10,115 @@
         name: apache2
         state: present
 
-    - name: Install PHP
-      apt:
-        name: php
-        state: present
-
     - name: Install Git
       apt:
         name: git
         state: present
 
-    - name: Install Pip
+    - name: Install Pip3
       apt:
-        name: pip
+        name: python3-pip
         state: present
+
+    - name: Add ondrej/php repository
+      apt_repository:
+        repo: ppa:ondrej/php
+        state: present
+      tags: [php]
+
+    - name: Install PHP 8.2 and Apache mod
+      apt:
+        update_cache: true
+        name:
+          - php8.2
+          - libapache2-mod-php8.2
+        state: present
+      tags: [php]
+
+    - name: activer php 
+      command: a2enmod php8.2
+
+    - name: restart apache2
+      command: service apache2 restart
+
+
+- name: Créer le fichier app.conf
+  hosts: web
+  become: true
+
+  tasks:
+    - name: Copier le modèle du fichier app.conf
+      template:
+        src: templates/app.conf.j2
+        dest: /etc/apache2/sites-available/app.conf
+
+    - name: Remplacer Server_name
+      command: >
+        public_ip=$(curl -s ifconfig.me) &&
+        echo "PUBLIC_IP=$public_ip" > /etc/environment &&
+        sed -i "s/ServerName\s*<SERVER_NAME>/ServerName $public_ip/g" /etc/apache2/sites-available/app.conf &&
+        echo "ServerName $public_ip" >> /etc/apache2/apache2.conf
+
+    - name: Activer le site
+      command: a2ensite app.conf
+
+    - name: Redémarrer Apache
+      service:
+        name: apache2
+        state: restarted
+
+- name: Décommenter pdo_mysql.so
+  hosts: web
+  become: true
+  replace: 
+    path: /etc/php/8.2/cli/php.ini
+    regexp: ';extension=pdo_mysql'
+    replace: 'extension=/usr/lib/php/20220829/pdo_mysql.so'
+
+
+- name: Installer, configurer et déployer app.conf
+  hosts: web
+  become: true
+  tasks:
+    - name: Clone Git repository
+      git:
+        repo: https://github.com/simonLongatte/Projectwarwaitcap.git
+        dest: /home/admin
+        version: development
+  
+    - name: Modifier les valeurs de connexion dans bdd.php
+      ansible.builtin.replace:
+        path: /home/admin/Projectwarwaitcap/Projet/Application/lib/bdd.php
+        regexp: "{{ item.regexp }}"
+        replace: "{{ item.replace }}"
+      with_items:
+        - { regexp: '\$username = .*', replace: '$username = "{{ mysql_user }}"' }
+        - { regexp: '\$password = .*', replace: '$password = "{{ mysql_password }}"' }
+        - { regexp: 'mysql:host=.*;', replace: 'mysql:host={{ host }};' }
+      vars:
+        host: "{{ hostvars['sql']['ansible_host'] }}"
+
+    - name: Modifier le fichier id_db.txt
+      replace: 
+        path: /home/admin/Projectwarwaitcap/Projet/Application/etc/id_db.txt
+        regexp: 'host=localhost;user=root;password=#Admin31415'
+        replace: 'host={{ host }};user="{{ mysql_user }}";password="{{ mysql_password }}"'
+      vars:
+        host: "{{ hostvars['sql']['ansible_host'] }}"
+    
+    - name: déplacer fichier 
+      command: >
+        cp -R /home/admin/Projectwarwaitcap/Projet/Application/* /var/www/html
+        mv /var/www/html/view/* /var/www/html
+    
+    - name: désactiver site par défaut et activer app.conf
+      command: > 
+        a2dissite 000-default.conf
+        a2ensite app.conf
+    
+    - name: Restart Apache
+      service:
+        name: apache2
+        state: restarted
+
+

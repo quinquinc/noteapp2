@@ -1,0 +1,96 @@
+---
+- name: Install and configure MySQL
+  hosts: sql
+  become: true
+
+  tasks:
+    - name: Install MySQL server
+      apt:
+        name: mysql-server
+        state: present
+
+    - name: Start MySQL service
+      service:
+        name: mysql
+        state: started
+
+    - name: Secure MySQL installation
+      debconf:
+        name: mysql-server
+        question: mysql-server/root_password
+        value: "{{ mysql_root_password }}"
+        vtype: password
+
+    - name: Secure MySQL installation
+      debconf:
+        name: mysql-server
+        question: mysql-server/root_password_again
+        value: "{{ mysql_root_password }}"
+        vtype: password
+
+    - name: Restart MySQL service
+      service:
+        name: mysql
+        state: restarted
+
+    - name: Create databases
+      mysql_db:
+        name: "{{ item }}"
+        state: present
+      loop:
+        - cis_nord_warwait
+        - skillmatrix
+
+    - name: Create MySQL user
+      mysql_user:
+        name: "{{ mysql_user }}"
+        password: "{{ mysql_password }}"
+        priv: "*.*:ALL,GRANT"
+        state: present
+
+    - name: Install Git
+      apt:
+        name: git
+        state: present
+
+    - name: Clone Git repository
+      git:
+        repo: https://github.com/simonLongatte/Projectwarwaitcap.git
+        dest: /home/admin
+        version: development
+
+    - name: Install Pip3
+      apt:
+        name: python3-pip
+        state: present
+
+    - name: Install requirements
+      pip: 
+        name: 
+          - tqdm
+          - numpy
+          - pandas
+          - openpyxl
+          - mysql-connector-python
+        state: present
+
+    - name: Mettre à jour les valeurs d'utilisateur et de mot de passe dans withoutGr.py
+      ansible.builtin.lineinfile:
+        path: /home/admin/Projectwarwaitcap/Projet/AppPython/withoutGr.py
+        regexp: "{{ item.regexp }}"
+        line: "{{ item.line }}"
+      with_items:
+        - { regexp: '^self.USER = .*', line: 'self.USER = "{{ mysql_user }}"' }
+        - { regexp: '^self.PASSWORD = .*', line: 'self.PASSWORD = "{{ mysql_root_password }}"' }
+      
+    - name: Init Wait Room
+      command: python3 Projectwarwaitcap/Projet/AppPython/withoutGr.py -W '/home/admin/Wait_Room_2023.xlsx'
+      args:
+        chdir: /home/admin
+
+    - name: Init Matrice
+      command: python3 Projectwarwaitcap/Projet/AppPython/withoutGr.py -MC '/home/admin/Matrice_des_competences.xlsx'
+      args:
+        chdir: /home/admin
+
+    
