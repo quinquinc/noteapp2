@@ -77,14 +77,12 @@
     #     echo "ServerName $public_ip" >> /etc/apache2/apache2.conf
 
     - name: Obtenir l'adresse IP publique
-      uri:
-        url: "https://ifconfig.me"
-        return_content: yes
+      shell: "curl -s ifconfig.me/ip"
       register: public_ip_result
 
     - name: Extraire l'adresse IP publique
       set_fact:
-        public_ip: "{{ public_ip_result.content | regex_replace('<[^>]+>', '') | trim }}"
+        public_ip: "{{ public_ip_result.stdout | regex_findall('\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}') | first }}"
 
     - name: Remplacer ServerName dans app.conf
       replace:
@@ -98,6 +96,7 @@
         path: /etc/apache2/apache2.conf
         line: 'ServerName {{ public_ip }}'
         insertafter: EOF
+
 
 
     - name: Activer le site
