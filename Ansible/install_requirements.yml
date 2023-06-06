@@ -69,12 +69,40 @@
         src: app.conf.j2
         dest: /etc/apache2/sites-available/app.conf
 
-    - name: Remplacer Server_name
-      command: >
-        public_ip=$(curl -s ifconfig.me)
-        echo "PUBLIC_IP=$public_ip" > /etc/environment
-        sed -i "s/ServerName\s*<SERVER_NAME>/ServerName $public_ip/g" /etc/apache2/sites-available/app.conf
-        echo "ServerName $public_ip" >> /etc/apache2/apache2.conf
+    # - name: Remplacer Server_name
+    #   command: >
+    #     public_ip=$(curl -s ifconfig.me)
+    #     echo "PUBLIC_IP=$public_ip" > /etc/environment
+    #     sed -i "s/ServerName\s*<SERVER_NAME>/ServerName $public_ip/g" /etc/apache2/sites-available/app.conf
+    #     echo "ServerName $public_ip" >> /etc/apache2/apache2.conf
+
+    - name: Obtenir l'adresse IP publique
+      uri:
+        url: https://ifconfig.me
+        return_content: yes
+      register: public_ip_result
+
+    - name: Enregistrer l'adresse IP publique dans la variable
+      set_fact:
+        public_ip: "{{ public_ip_result.content | regex_replace('\n', '') }}"
+
+    - name: Définir la variable d'environnement PUBLIC_IP
+      lineinfile:
+        dest: /etc/environment
+        line: "PUBLIC_IP={{ public_ip }}"
+      notify: Redémarrer Apache
+
+    - name: Remplacer ServerName dans app.conf
+      replace:
+        path: /etc/apache2/sites-available/app.conf
+        regexp: "ServerName\\s*<SERVER_NAME>"
+        replace: "ServerName {{ public_ip }}"
+      notify: Redémarrer Apache
+
+    - name: Ajouter ServerName dans apache2.conf
+      lineinfile:
+        dest: /etc/apache2/apache2.conf
+        line: "ServerName {{ public_ip }}"
 
     - name: Activer le site
       command: a2ensite app.conf
