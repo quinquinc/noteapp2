@@ -162,10 +162,13 @@
 
     
     - name: désactiver site par défaut et activer app.conf
-      command: > 
+      shell: | 
         a2dissite 000-default.conf
         a2ensite app.conf
-    
+      args:
+        executable: /bin/bash
+      become: true
+      
     - name: Restart Apache
       service:
         name: apache2
