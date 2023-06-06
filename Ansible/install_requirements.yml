@@ -130,6 +130,7 @@
         repo: https://github.com/simonLongatte/Projectwarwaitcap.git
         dest: /home/admin/app
         version: development
+        force: yes
   
     - name: Modifier les valeurs de connexion dans bdd.php
       ansible.builtin.replace:
