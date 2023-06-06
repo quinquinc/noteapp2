@@ -120,8 +120,11 @@
   vars_files:
     - vars.yml
   tasks:
-    - name: créer dossier git Clone
-      command: mkdir /home/admin/app
+    - name: Créer un dossier s'il n'existe pas déjà
+      file:
+        path: /home/admin/app
+        state: directory
+
     - name: Clone Git repository
       git:
         repo: https://github.com/simonLongatte/Projectwarwaitcap.git
