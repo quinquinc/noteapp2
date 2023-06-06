@@ -133,7 +133,7 @@
   
     - name: Modifier les valeurs de connexion dans bdd.php
       ansible.builtin.replace:
-        path: /home/admin/app/Projectwarwaitcap/Projet/Application/lib/bdd.php
+        path: /home/admin/app/Projet/Application/lib/bdd.php
         regexp: "{{ item.regexp }}"
         replace: "{{ item.replace }}"
       with_items:
@@ -145,7 +145,7 @@
 
     - name: Modifier le fichier id_db.txt
       replace: 
-        path: /home/admin/app/Projectwarwaitcap/Projet/Application/etc/id_db.txt
+        path: /home/admin/app/Projet/Application/etc/id_db.txt
         regexp: 'host=localhost;user=root;password=#Admin31415'
         replace: 'host={{ host }};user="{{ mysql_user }}";password="{{ mysql_password }}"'
       vars:
@@ -153,7 +153,7 @@
     
     - name: déplacer fichier 
       command: >
-        cp -R /home/admin/app/Projectwarwaitcap/Projet/Application/* /var/www/html
+        cp -R /home/admin/app/Projet/Application/* /var/www/html
         mv /var/www/html/view/* /var/www/html
     
     - name: désactiver site par défaut et activer app.conf

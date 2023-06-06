@@ -53,10 +53,15 @@
         name: git
         state: present
 
+    - name: Créer un dossier s'il n'existe pas déjà
+      file:
+        path: /home/admin/app
+        state: directory
+
     - name: Clone Git repository
       git:
         repo: https://github.com/simonLongatte/Projectwarwaitcap.git
-        dest: /home/admin
+        dest: /home/admin/app
         version: development
 
     - name: Install Pip3
@@ -76,7 +81,7 @@
 
     - name: Mettre à jour les valeurs d'utilisateur et de mot de passe dans withoutGr.py
       ansible.builtin.lineinfile:
-        path: /home/admin/Projectwarwaitcap/Projet/AppPython/withoutGr.py
+        path: /home/admin/Projet/AppPython/withoutGr.py
         regexp: "{{ item.regexp }}"
         line: "{{ item.line }}"
       with_items:
@@ -84,13 +89,13 @@
         - { regexp: '^self.PASSWORD = .*', line: 'self.PASSWORD = "{{ mysql_root_password }}"' }
       
     - name: Init Wait Room
-      command: python3 Projectwarwaitcap/Projet/AppPython/withoutGr.py -W '/home/admin/Wait_Room_2023.xlsx'
+      command: python3 Projet/AppPython/withoutGr.py -W '/home/admin/Wait_Room_2023.xlsx'
       args:
-        chdir: /home/admin
+        chdir: /home/admin/app
 
     - name: Init Matrice
-      command: python3 Projectwarwaitcap/Projet/AppPython/withoutGr.py -MC '/home/admin/Matrice_des_competences.xlsx'
+      command: python3 Projet/AppPython/withoutGr.py -MC '/home/admin/Matrice_des_competences.xlsx'
       args:
-        chdir: /home/admin
+        chdir: /home/admin/app
 
     
