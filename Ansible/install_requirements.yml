@@ -117,7 +117,7 @@
 - name: Installer, configurer et déployer app.conf
   hosts: web
   become: true
-  vars_file:
+  vars_files:
     - vars.yml
   tasks:
     - name: créer dossier git Clone
