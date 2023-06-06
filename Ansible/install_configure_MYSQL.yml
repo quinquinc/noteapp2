@@ -4,9 +4,15 @@
   become: true
 
   tasks:
+    - name: Download APT repository mysql
+      get_url:
+        url: https://dev.mysql.com/get/mysql-apt-config_0.8.22-1_all.deb
+        update_cache: yes
+        
+
     - name: Install MySQL server
       apt:
-        name: mysql-server
+        deb: /home/admin/mysql-apt-config_0.8.22-1_all.deb
         state: present
 
     - name: Start MySQL service
