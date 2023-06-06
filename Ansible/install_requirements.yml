@@ -39,9 +39,10 @@
 
     - name: Add PHP repository to sources.list.d
       copy:
-        content: "deb https://packages.sury.org/php/ $(lsb_release -sc) main\n"
+        content: "deb https://packages.sury.org/php/ {{ ansible_distribution_release }} main\n"
         dest: /etc/apt/sources.list.d/php.list
         mode: '0644'
+
 
 
     - name: Install PHP 8.2 and Apache mod
