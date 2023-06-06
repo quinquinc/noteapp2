@@ -9,10 +9,10 @@
     # - name: Mise à jour du cache des paquets 1
     #   apt:
     #     update_cache: yes
-    # - name: Installation de gpg
-    #   apt:
-    #     name: gnupg
-    #     state: present
+    - name: Installation de gpg
+      apt:
+        name: gnupg
+        state: present
 
     # - name: Ajout de la clé du dépôt MySQL
     #   apt_key:
@@ -33,7 +33,21 @@
     #     name: mysql-server
     #     state: present
 
+    - name: Install Pip3
+      apt:
+        name: python3-pip
+        state: present
 
+    - name: Install requirements
+      pip: 
+        name: 
+          - tqdm
+          - numpy
+          - pandas
+          - openpyxl
+          - mysql-connector-python
+        state: present
+        
     - name: Start MySQL service
       service:
         name: mysql
@@ -89,20 +103,7 @@
         dest: /home/admin/app
         version: development
 
-    - name: Install Pip3
-      apt:
-        name: python3-pip
-        state: present
-
-    - name: Install requirements
-      pip: 
-        name: 
-          - tqdm
-          - numpy
-          - pandas
-          - openpyxl
-          - mysql-connector-python
-        state: present
+    
 
     - name: Mettre à jour les valeurs d'utilisateur et de mot de passe dans withoutGr.py
       ansible.builtin.lineinfile:
