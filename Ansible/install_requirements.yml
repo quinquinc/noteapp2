@@ -27,12 +27,13 @@
           - apt-transport-https 
           - ca-certificates 
           - software-properties-common
+          - wget 
+          - curl 
         state: present
     
     - name: add repo php 
       command: >
-        wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
-        sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list' 
+        curl -sSL https://packages.sury.org/php/README.txt | sudo bash -x 
 
     - name: Install PHP 8.2 and Apache mod
       apt:
