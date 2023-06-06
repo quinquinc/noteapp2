@@ -149,7 +149,7 @@
         regexp: 'host=localhost;user=root;password=#Admin31415'
         replace: 'host={{ host }};user="{{ mysql_user }}";password="{{ mysql_password }}"'
       vars:
-        host: "{{ hostvars['sql']['ansible_host'] }}"
+        host: "{{ hostvars[groups['sql'][0]]['ansible_host'] }}"
     
     - name: déplacer fichier 
       command: >
