@@ -14,7 +14,7 @@
 
     - name: Ajout de la clé du dépôt MySQL
       apt_key:
-        url: "https://dev.mysql.com/doc/mysql-apt-repo-quick-guide/en/mysql-apt-config_0.8.22-1_all.deb.asc"
+        url: "https://repo.mysql.com/RPM-GPG-KEY-mysql-2022"
         state: present
 
     - name: Ajout de la source de paquets MySQL
