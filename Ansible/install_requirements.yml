@@ -31,9 +31,12 @@
           - curl 
         state: present
     
-    - name: add repo php 
-      command: >
-        curl -sSL https://packages.sury.org/php/README.txt | sudo bash -x 
+    - name: Download PHP repository file
+      get_url:
+        url: https://packages.sury.org/php/README.txt
+        dest: /tmp/README.txt
+        mode: '0644'
+ 
 
     - name: Install PHP 8.2 and Apache mod
       apt:
