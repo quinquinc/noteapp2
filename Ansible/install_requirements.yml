@@ -90,14 +90,13 @@
       lineinfile:
         dest: /etc/environment
         line: "PUBLIC_IP={{ public_ip }}"
-      notify: Redémarrer Apache
-
+      
     - name: Remplacer ServerName dans app.conf
       replace:
         path: /etc/apache2/sites-available/app.conf
         regexp: "ServerName\\s*<SERVER_NAME>"
         replace: "ServerName {{ public_ip }}"
-      notify: Redémarrer Apache
+      
 
     - name: Ajouter ServerName dans apache2.conf
       lineinfile:
