@@ -78,30 +78,27 @@
 
     - name: Obtenir l'adresse IP publique
       uri:
-        url: https://ifconfig.me
+        url: "https://ifconfig.me"
         return_content: yes
       register: public_ip_result
 
-    - name: Enregistrer l'adresse IP publique dans la variable
+    - name: Extraire l'adresse IP publique
       set_fact:
-        public_ip: "{{ public_ip_result.content | regex_replace('\n', '') }}"
+        public_ip: "{{ public_ip_result.content | regex_replace('<[^>]+>', '') | trim }}"
 
-    - name: Définir la variable d'environnement PUBLIC_IP
-      lineinfile:
-        dest: /etc/environment
-        line: "PUBLIC_IP={{ public_ip }}"
-      
     - name: Remplacer ServerName dans app.conf
       replace:
         path: /etc/apache2/sites-available/app.conf
-        regexp: "ServerName\\s*<SERVER_NAME>"
-        replace: "ServerName {{ public_ip }}"
-      
+        regexp: 'ServerName\s*<SERVER_NAME>'
+        replace: 'ServerName {{ public_ip }}'
+        backup: yes
 
     - name: Ajouter ServerName dans apache2.conf
       lineinfile:
-        dest: /etc/apache2/apache2.conf
-        line: "ServerName {{ public_ip }}"
+        path: /etc/apache2/apache2.conf
+        line: 'ServerName {{ public_ip }}'
+        insertafter: EOF
+
 
     - name: Activer le site
       command: a2ensite app.conf
