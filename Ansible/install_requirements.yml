@@ -121,7 +121,7 @@
     - name: Clone Git repository
       git:
         repo: https://github.com/simonLongatte/Projectwarwaitcap.git
-        dest: /home/admin
+        dest: /home/admin/
         version: development
   
     - name: Modifier les valeurs de connexion dans bdd.php
