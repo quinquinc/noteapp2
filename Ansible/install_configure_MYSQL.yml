@@ -4,16 +4,15 @@
   become: true
 
   tasks:
-    - name: Download APT repository mysql
-      get_url:
-        url: https://dev.mysql.com/get/mysql-apt-config_0.8.22-1_all.deb
-        dest: /home/admin/mysql-apt-config_0.8.22-1_all.deb
-        
-
-    - name: Install MySQL server
+    - name: Mise à jour du cache des paquets
       apt:
-        deb: /home/admin/mysql-apt-config_0.8.22-1_all.deb
         update_cache: yes
+
+    - name: Installation de MySQL Server
+      apt:
+        name: mysql-server
+        state: present
+
 
     - name: Start MySQL service
       service:
