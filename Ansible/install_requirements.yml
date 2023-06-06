@@ -20,11 +20,19 @@
         name: python3-pip
         state: present
 
-    - name: Add ondrej/php repository
-      apt_repository:
-        repo: ppa:ondrej/php
+    - name: Install tools
+      apt:
+        name:
+          - lsb-release
+          - apt-transport-https 
+          - ca-certificates 
+          - software-properties-common
         state: present
-      tags: [php]
+    
+    - name: add repo php 
+      command: >
+        wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg
+        sh -c 'echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list' 
 
     - name: Install PHP 8.2 and Apache mod
       apt:
