@@ -31,12 +31,18 @@
           - curl 
         state: present
     
-    - name: Download PHP repository file
+    - name: Download PHP GPG key
       get_url:
-        url: https://packages.sury.org/php/README.txt
-        dest: /tmp/README.txt
+        url: https://packages.sury.org/php/apt.gpg
+        dest: /etc/apt/trusted.gpg.d/php.gpg
         mode: '0644'
- 
+
+    - name: Add PHP repository to sources.list.d
+      copy:
+        content: "deb https://packages.sury.org/php/ $(lsb_release -sc) main\n"
+        dest: /etc/apt/sources.list.d/php.list
+        mode: '0644'
+
 
     - name: Install PHP 8.2 and Apache mod
       apt:
