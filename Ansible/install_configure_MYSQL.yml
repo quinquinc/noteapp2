@@ -2,6 +2,8 @@
 - name: Install and configure MySQL
   hosts: sql
   become: true
+  vars_files:
+    - vars.yml
 
   tasks:
     - name: Mise à jour du cache des paquets 1
