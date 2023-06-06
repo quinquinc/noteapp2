@@ -67,13 +67,11 @@
         name: apache2
         state: restarted
 
-- name: Décommenter pdo_mysql.so
-  hosts: web
-  become: true
-  replace: 
-    path: /etc/php/8.2/cli/php.ini
-    regexp: ';extension=pdo_mysql'
-    replace: 'extension=/usr/lib/php/20220829/pdo_mysql.so'
+    - name: Décommenter pdo_mysql.so
+      replace: 
+        path: /etc/php/8.2/cli/php.ini
+        regexp: ';extension=pdo_mysql'
+        replace: 'extension=/usr/lib/php/20220829/pdo_mysql.so'
 
 
 - name: Installer, configurer et déployer app.conf
