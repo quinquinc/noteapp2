@@ -4,11 +4,14 @@
   become: true
 
   tasks:
+    - name: Mise à jour du cache des paquets 1
+      apt:
+        update_cache: yes
     - name: Installation de gpg
       apt:
         name: gnupg
         state: present
-        
+
     - name: Ajout de la clé du dépôt MySQL
       apt_key:
         url: "https://dev.mysql.com/doc/mysql-apt-repo-quick-guide/en/mysql-apt-config_0.8.22-1_all.deb.asc"
