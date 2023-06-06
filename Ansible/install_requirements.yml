@@ -66,7 +66,7 @@
   tasks:
     - name: Copier le modèle du fichier app.conf
       template:
-        src: templates/app.conf.j2
+        src: app.conf.j2
         dest: /etc/apache2/sites-available/app.conf
 
     - name: Remplacer Server_name
