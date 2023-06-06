@@ -141,7 +141,7 @@
         - { regexp: '\$password = .*', replace: '$password = "{{ mysql_password }}"' }
         - { regexp: 'mysql:host=.*;', replace: 'mysql:host={{ host }};' }
       vars:
-        host: "{{ hostvars['sql']['ansible_host'] }}"
+        host: "{{ hostvars[groups['sql'][0]]['ansible_host'] }}"
 
     - name: Modifier le fichier id_db.txt
       replace: 
