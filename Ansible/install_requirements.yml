@@ -151,10 +151,14 @@
       vars:
         host: "{{ hostvars[groups['sql'][0]]['inventory_hostname'] }}"
     
-    - name: déplacer fichier 
-      command: >
+    - name: Déplacer les fichiers
+      shell: |
         cp -R /home/admin/app/Projet/Application/* /var/www/html
         mv /var/www/html/view/* /var/www/html
+      args:
+        executable: /bin/bash
+      become: true
+
     
     - name: désactiver site par défaut et activer app.conf
       command: > 
