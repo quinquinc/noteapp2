@@ -9,6 +9,12 @@
         content: "deb https://packages.sury.org/php/ {{ ansible_distribution_release }} main\n"
         dest: /etc/apt/sources.list.d/php.list
         mode: '0644'
+    
+    - name: Download PHP GPG key
+      get_url:
+        url: https://packages.sury.org/php/apt.gpg
+        dest: /etc/apt/trusted.gpg.d/php.gpg
+        mode: '0644'
 
     - name: Install apache2
       apt:
@@ -36,12 +42,6 @@
           - wget 
           - curl 
         state: present
-    
-    - name: Download PHP GPG key
-      get_url:
-        url: https://packages.sury.org/php/apt.gpg
-        dest: /etc/apt/trusted.gpg.d/php.gpg
-        mode: '0644'
 
     - name: Install PHP 8.2 and Apache mod
       apt:
