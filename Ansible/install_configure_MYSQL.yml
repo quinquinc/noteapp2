@@ -179,6 +179,17 @@
         recurse: yes
         mode: "a+x"
 
+    - name: Modify Apache configuration
+      ansible.builtin.lineinfile:
+        path: /etc/apache2/apache2.conf
+        regexp: '^<Directory /var/www/>'
+        line: '<Directory /var/www/html/>'
+
+    - name: Install MySQL Client on Debian/Ubuntu
+      apt:
+        name: default-mysql-client
+        state: present
+
 
     - name: restart apache2
       service:
