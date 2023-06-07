@@ -136,24 +136,17 @@
         force: yes
   
     - name: Modifier les valeurs de connexion dans bdd.php
-      ansible.builtin.replace:
-        path: /home/admin/app/Projet/Application/lib/bdd.php
-        regexp: "{{ item.regexp }}"
-        replace: "{{ item.replace }}"
-      with_items:
-        - { regexp: '\$username = .*', replace: '$username = "{{ mysql_user }}"' }
-        - { regexp: '\$password = .*', replace: '$password = "{{ mysql_password }}"' }
-        - { regexp: 'mysql:host=.*;', replace: 'mysql:host={{ host }};' }
+      template:
+        src: bdd.php.j2
+        dest: /home/admin/app/Projet/Application/lib/bdd.php
+
+    - name: Modifier le fichier id_db.txt
+      template:
+        src: id_db.txt.j2
+        dest: /home/admin/app/Projet/Application/etc/id_db.txt
       vars:
         host: "{{ hostvars[groups['sql'][0]]['inventory_hostname'] }}"
 
-    - name: Modifier le fichier id_db.txt
-      replace: 
-        path: /home/admin/app/Projet/Application/etc/id_db.txt
-        regexp: 'host=localhost;user=root;password=#Admin31415'
-        replace: 'host={{ host }};user="{{ mysql_user }}";password="{{ mysql_password }}"'
-      vars:
-        host: "{{ hostvars[groups['sql'][0]]['inventory_hostname'] }}"
     
     - name: Déplacer les fichiers
       shell: |
