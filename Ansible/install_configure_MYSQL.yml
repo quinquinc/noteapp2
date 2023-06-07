@@ -162,10 +162,15 @@
       args:
         chdir: /home/admin/app
 
-- name: Install and configure MySQL
+- name: Dernières modifications apache2
   hosts: web
   become: true
   tasks:
+    - name: chown
+      shell: 
+        chown -R www-data:www-data /var/www/html/*
+      args:
+        executable: /bin/bash
     - name: restart apache2
       service:
         name: apache2
