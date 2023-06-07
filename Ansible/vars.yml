@@ -3,3 +3,10 @@ mysql_user: "{{ lookup('env', 'MYSQL_USER') }}"
 mysql_password: "{{ lookup('env', 'MYSQL_PASSWORD') }}"
 debian_name: bullseye
 mysql_version: 8.0
+mysql_database: 
+  - name: cis_nord_warwait
+  - name: skillmatrix
+mysql_users: 
+  - name: "{{ lookup('env', 'MYSQL_USER') }}"
+    password: "{{ lookup('env', 'MYSQL_PASSWORD') }}"
+    priv: "*.*:ALL"

@@ -4,34 +4,21 @@
   become: true
   vars_files:
     - vars.yml
+  roles: 
+    - geerlingguy.mysql
 
   tasks:
-    # - name: Mise à jour du cache des paquets 1
-    #   apt:
-    #     update_cache: yes
+    - name: Mise à jour du cache des paquets 1
+      apt:
+        update_cache: yes
+
     - name: Installation de gpg
       apt:
         name: gnupg
         state: present
 
-    # - name: Ajout de la clé du dépôt MySQL
-    #   apt_key:
-    #     url: "https://repo.mysql.com/RPM-GPG-KEY-mysql-2022"
-    #     state: present
-
-    # - name: Ajout de la source de paquets MySQL
-    #   apt_repository:
-    #     repo: "https://repo.mysql.com/apt/debian/dists/bullseye/mysql-8.0/binary-amd64/Packages.deb"
-    #     state: present
-
-    # - name: Mise à jour du cache des paquets
-    #   apt:
-    #     update_cache: yes
-
-    # - name: Installation de MySQL Server
-    #   apt:
-    #     name: mysql-server
-    #     state: present
+    - name: installation rôle geerlingguy.mysql
+      command: ansible-galaxy install geerlingguy.mysql
 
     - name: Install Pip3
       apt:
@@ -46,46 +33,96 @@
           - pandas
           - openpyxl
           - mysql-connector-python
+          - PyMySQL
+          - mysqlclient
         state: present
+        
+    - name: Add MySQL repository key
+      apt_key:
+        url: https://repo.mysql.com/RPM-GPG-KEY-mysql
+        state: present
+
+    - name: Add MySQL repository
+      apt_repository:
+        repo: "deb http://repo.mysql.com/apt/debian/ buster mysql-8.0"
+        state: present
+
+    - name: Install MySQL server
+      apt:
+        name: mysql-server
+        state: present
+        update_cache: yes
+        force_apt_get: yes
+        debconf:
+          name: mysql-server
+          question: mysql-server/root_password
+          value: "{{ mysql_root_password }}"
+          vtype: password
+          state: present
+        environment:
+          DEBIAN_FRONTEND: noninteractive
+
+    # - name: Change MySQL root password
+    #   mysql_user:
+    #     name: root
+    #     password: "{{ mysql_root_password }}"
+    #     host: localhost
+    #     login_user: root
+    #     login_password: ""
+    #     login_unix_socket: /var/run/mysqld/mysqld.sock
+
+    - name: Create MySQL databases
+      mysql_db:
+        name: "{{ item.name }}"
+        state: present
+      loop: "{{ mysql_databases }}"
+
+    - name: Create MySQL user
+      mysql_user:
+        name: "{{ item.name }}"
+        password: "{{ item.password }}"
+        priv: "{{ item.priv }}"
+        state: present
+      loop: "{{ mysql_users }}"
         
     - name: Start MySQL service
       service:
         name: mysql
         state: started
 
-    - name: Secure MySQL installation
-      debconf:
-        name: mysql-server
-        question: mysql-server/root_password
-        value: "{{ mysql_root_password }}"
-        vtype: password
+    # - name: Secure MySQL installation
+    #   debconf:
+    #     name: mysql-server
+    #     question: mysql-server/root_password
+    #     value: "{{ mysql_root_password }}"
+    #     vtype: password
 
-    - name: Secure MySQL installation
-      debconf:
-        name: mysql-server
-        question: mysql-server/root_password_again
-        value: "{{ mysql_root_password }}"
-        vtype: password
+    # - name: Secure MySQL installation
+    #   debconf:
+    #     name: mysql-server
+    #     question: mysql-server/root_password_again
+    #     value: "{{ mysql_root_password }}"
+    #     vtype: password
 
-    - name: Restart MySQL service
-      service:
-        name: mysql
-        state: restarted
+    # - name: Restart MySQL service
+    #   service:
+    #     name: mysql
+    #     state: restarted
 
-    - name: Create databases
-      mysql_db:
-        name: "{{ item }}"
-        state: present
-      loop:
-        - cis_nord_warwait
-        - skillmatrix
+    # - name: Create databases
+    #   mysql_db:
+    #     name: "{{ item }}"
+    #     state: present
+    #   loop:
+    #     - cis_nord_warwait
+    #     - skillmatrix
 
-    - name: Create MySQL user
-      mysql_user:
-        name: "{{ mysql_user }}"
-        password: "{{ mysql_password }}"
-        priv: "*.*:ALL,GRANT"
-        state: present
+    # - name: Create MySQL user
+    #   mysql_user:
+    #     name: "{{ mysql_user }}"
+    #     password: "{{ mysql_password }}"
+    #     priv: "*.*:ALL,GRANT"
+    #     state: present
 
     - name: Install Git
       apt:
