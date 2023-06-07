@@ -87,6 +87,7 @@
         password: "{{ item.password }}"
         priv: "{{ item.priv }}"
         state: present
+        host: "%"
       loop: "{{ mysql_users }}"
         
     - name: Start MySQL service
