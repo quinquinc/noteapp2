@@ -41,30 +41,30 @@
           - mysqlclient
         state: present
 
-    - name: Add MySQL repository key
-      apt_key:
-        url: https://repo.mysql.com/RPM-GPG-KEY-mysql
-        state: present
+    # - name: Add MySQL repository key
+    #   apt_key:
+    #     url: https://repo.mysql.com/RPM-GPG-KEY-mysql
+    #     state: present
 
-    - name: Add MySQL repository
-      apt_repository:
-        repo: "deb http://repo.mysql.com/apt/debian/ buster mysql-8.0"
-        state: present
+    # - name: Add MySQL repository
+    #   apt_repository:
+    #     repo: "deb http://repo.mysql.com/apt/debian/ buster mysql-8.0"
+    #     state: present
 
-    - name: Install MySQL server
-      apt:
-        name: mysql-server
-        state: present
-        update_cache: yes
-        force_apt_get: yes
-        debconf:
-          name: mysql-server
-          question: mysql-server/root_password
-          value: "{{ mysql_root_password }}"
-          vtype: password
-          state: present
-        environment:
-          DEBIAN_FRONTEND: noninteractive
+    # - name: Install MySQL server
+    #   apt:
+    #     name: mysql-server
+    #     state: present
+    #     update_cache: yes
+    #     force_apt_get: yes
+    #     debconf:
+    #       name: mysql-server
+    #       question: mysql-server/root_password
+    #       value: "{{ mysql_root_password }}"
+    #       vtype: password
+    #       state: present
+    #     environment:
+    #       DEBIAN_FRONTEND: noninteractive
 
     # - name: Change MySQL root password
     #   mysql_user:
