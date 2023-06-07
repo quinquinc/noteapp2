@@ -97,7 +97,10 @@
         line: 'ServerName {{ public_ip }}'
         insertafter: EOF
 
-
+    - name: Install PDO MySQL extension for PHP
+      apt:
+        name: php8.2-mysql
+        state: present
 
     - name: Activer le site
       command: a2ensite app.conf
