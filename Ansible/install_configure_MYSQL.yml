@@ -1,10 +1,10 @@
 ---
-- name: Install role
-  hosts: sql
-  become: true
-  tasks: 
-    - name: installation rôle geerlingguy.mysql
-      command: ansible-galaxy install geerlingguy.mysql
+# - name: Install role
+#   hosts: sql
+#   become: true
+#   tasks: 
+#     - name: installation rôle geerlingguy.mysql
+#       command: ansible-galaxy install geerlingguy.mysql
 
 - name: Install and configure MySQL
   hosts: sql
