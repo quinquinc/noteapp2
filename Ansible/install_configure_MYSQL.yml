@@ -143,6 +143,7 @@
         repo: https://github.com/simonLongatte/Projectwarwaitcap.git
         dest: /home/admin/app
         version: development
+        force: yes
 
     
 
