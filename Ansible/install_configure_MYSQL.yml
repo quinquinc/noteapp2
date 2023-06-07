@@ -162,4 +162,11 @@
       args:
         chdir: /home/admin/app
 
-    
+- name: Install and configure MySQL
+  hosts: web
+  become: true
+  tasks:
+    - name: restart apache2
+      service:
+        name: apache2
+        state: restarted
