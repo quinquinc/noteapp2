@@ -166,12 +166,17 @@
   hosts: web
   become: true
   tasks:
-    - name: chown
-      shell: 
-        chown -R www-data:www-data /var/www/html/*
-        chmod a+x /var/www/html/script/*
-      args:
-        executable: /bin/bash
+    - name: Set ownership for /var/www/html
+      file:
+        path: /var/www/html
+        owner: www-data
+        group: www-data
+        recurse: yes
+
+    - name: Set execute permissions for /var/www/html/script
+      command:
+        cmd: chmod a+x /var/www/html/script/*
+
     - name: restart apache2
       service:
         name: apache2
