@@ -148,7 +148,7 @@
 
     - name: Mettre à jour les valeurs d'utilisateur et de mot de passe dans withoutGr.py
       ansible.builtin.lineinfile:
-        path: /home/admin/Projet/AppPython/withoutGr.py
+        path: /home/admin/app/Projet/AppPython/withoutGr.py
         regexp: "{{ item.regexp }}"
         line: "{{ item.line }}"
       with_items:
