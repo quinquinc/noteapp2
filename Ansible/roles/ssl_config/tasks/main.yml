@@ -17,16 +17,6 @@
     backup: yes
 
 
-
-- name: Copy SSL certificate to remote hosts
-  ansible.builtin.copy:
-    src: /etc/ssl/certs/{{ server_name }}.crt
-    dest: /etc/ssl/certs/{{ server_name }}.crt
-    owner: root
-    group: root
-    mode: '0644'
-  run_once: true
-
 - name: Enable SSL module in Apache
   ansible.builtin.shell: a2enmod ssl
   become: true
