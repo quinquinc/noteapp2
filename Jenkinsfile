@@ -14,7 +14,7 @@ pipeline {
         ])
       }
     }    
-    stage('Install Docker Git etc') {      
+    stage('Install requirements') {      
       agent { node { label 'ansible'} }
       environment {
         // Définit les variables d'environnement pour l'utilisateur distant et les informations d'authentification SSH
@@ -29,7 +29,7 @@ pipeline {
       }
     }
     
-    stage('Deploiement image') {
+    stage('Install MYSQL et déploiement de l\'app') {
       agent { node { label 'ansible'} }
       environment {
         // Définit les variables d'environnement pour l'utilisateur distant et les informations d'authentification SSH
