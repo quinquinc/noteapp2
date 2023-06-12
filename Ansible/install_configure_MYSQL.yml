@@ -20,7 +20,6 @@
         repo: "deb [trusted=yes] http://repo.mysql.com/apt/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }} mysql-apt-config"
         state: present
         filename: mysql-apt-config
-        validate_certs: no
 
 
     - name: Import de la clé GPG MySQL APT
@@ -42,7 +41,7 @@
 
     - name: Install MySQL Server package
       apt:
-        name: mysql-server
+        name: default-mysql-server
         state: present
 
     - name: Start MySQL 
