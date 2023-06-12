@@ -81,6 +81,10 @@
       apt:
         name: python3-pip
         state: present
+    - name: Install libmysql-dev
+      apt:
+        name: libmysqlclient-dev
+        state: present
 
     - name: Install requirements
       pip: 
