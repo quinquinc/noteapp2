@@ -1,46 +1,55 @@
-- name: Créer le répertoire des fichiers SSL
-  file:
-    path: /home/admin/workspace/Test/Ansible/roles/ssl_config/files
-    state: directory
-
-- name: Generate SSL Certificates
-  command: /home/admin/Ansible/roles/ssl_config/files/generate_ssl_cert.sh
-  args:
-    chdir: "{{ role_path }}/files"
-  register: ssl_cert_output
-  changed_when: false
-
-- name: Copy SSL Certificates to Apache2
-  copy:
-    src: "{{ role_path }}/files/{{ ssl_cert_file }}"
-    dest: "/etc/apache2/{{ ssl_cert_file }}"
-    mode: 0600
+---
+- name: Generate self-signed SSL certificate
+  ansible.builtin.openssl_certificate:
+    path: /etc/ssl/certs/{{ server_name }}.crt
+    privatekey_path: /etc/ssl/private/{{ server_name }}.key
+    common_name: "{{ server_name }}"
     owner: root
     group: root
-  notify:
-    - Restart Apache2
+    mode: '0644'
+  register: ssl_certificate
 
-- name: Copy SSL Key to Apache2
-  copy:
-    src: "{{ role_path }}/files/{{ ssl_key_file }}"
-    dest: "/etc/apache2/{{ ssl_key_file }}"
-    mode: 0600
+- name: Copy SSL certificate to remote hosts
+  ansible.builtin.copy:
+    src: /etc/ssl/certs/{{ server_name }}.crt
+    dest: /etc/ssl/certs/{{ server_name }}.crt
     owner: root
     group: root
-  notify:
-    - Restart Apache2
+    mode: '0644'
+  run_once: true
 
-- name: Configure Apache2 for SSL
-  template:
-    src: default-ssl.conf.j2
-    dest: "/etc/apache2/sites-available/default-ssl.conf"
+- name: Copy SSL private key to remote hosts
+  ansible.builtin.copy:
+    src: /etc/ssl/private/{{ server_name }}.key
+    dest: /etc/ssl/private/{{ server_name }}.key
     owner: root
     group: root
-    mode: 0644
-  notify:
-    - Restart Apache2
+    mode: '0600'
+  run_once: true
 
-- name: Enable SSL module
-  command: a2enmod ssl
-  notify:
-    - Restart Apache2
+- name: Enable SSL module in Apache
+  ansible.builtin.a2enmod:
+    name: ssl
+  become: true
+
+- name: Update Apache VirtualHost configuration with SSL
+  ansible.builtin.replace:
+    path: /etc/apache2/sites-available/app.conf
+    regexp: 'VirtualHost \*:80'
+    replace: 'VirtualHost \*:443'
+  become: true
+
+- name: Update Apache VirtualHost configuration with SSL directives
+  ansible.builtin.blockinfile:
+    path: /etc/apache2/sites-available/app.conf
+    block: |
+      SSLEngine on
+      SSLCertificateFile /etc/ssl/certs/{{ server_name }}.crt
+      SSLCertificateKeyFile /etc/ssl/private/{{ server_name }}.key
+  become: true
+
+- name: Restart Apache service
+  ansible.builtin.service:
+    name: apache2
+    state: restarted
+  become: true
