@@ -22,7 +22,7 @@
         
     - name: Ajout MySQL APT repository
       apt_repository:
-        repo: "deb http://repo.mysql.com/apt/debian {{ ansible_distribution_release | lower }} mysql-apt-config"
+        repo: "deb http://repo.mysql.com/apt/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }} mysql-apt-config"
         state: present
         filename: mysql-apt-config
 
