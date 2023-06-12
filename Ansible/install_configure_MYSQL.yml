@@ -17,10 +17,11 @@
 
     - name: Ajout MySQL APT repository
       apt_repository:
-        repo: "deb http://repo.mysql.com/apt/debian {{ ansible_distribution_release | lower }} mysql-apt-config"
+        repo: "deb [trusted=yes] http://repo.mysql.com/apt/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }} mysql-apt-config"
         state: present
         filename: mysql-apt-config
-        update_cache: no
+        validate_certs: no
+
 
     - name: Import de la clé GPG MySQL APT
       command: apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 8C718D3B5072E1F5
