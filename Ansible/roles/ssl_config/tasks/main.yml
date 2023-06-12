@@ -13,15 +13,12 @@
     var: private_key
 
 - name: Generate self-signed SSL certificate
-  ansible.builtin.openssl_certificate:
-    path: /etc/ssl/certs/{{ server_name }}.crt
-    privatekey_content: "{{ private_key.privatekey }}"
-    owner: root
-    group: root
-    mode: '0644'
-    provider: selfsigned 
-    state: present
-  register: ssl_certificate
+  openssl_certificate:
+    path: /etc/ssl/certs/app.crt
+    privatekey: "{{ private_key.filename }}"
+    provider: selfsigned
+    backup: yes
+
 
 - name: Copy SSL certificate to remote hosts
   ansible.builtin.copy:
