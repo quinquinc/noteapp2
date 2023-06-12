@@ -28,8 +28,7 @@
   run_once: true
 
 - name: Enable SSL module in Apache
-  ansible.builtin.a2enmod:
-    name: ssl
+  ansible.builtin.shell: a2enmod ssl
   become: true
 
 - name: Update Apache VirtualHost configuration with SSL
