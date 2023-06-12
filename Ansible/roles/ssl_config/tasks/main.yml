@@ -1,3 +1,8 @@
+- name: Créer le répertoire des fichiers SSL
+  file:
+    path: /home/admin/workspace/Test/Ansible/roles/ssl_config/files
+    state: directory
+
 - name: Generate SSL Certificates
   command: ./generate_ssl_cert.sh
   args:
