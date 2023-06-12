@@ -14,6 +14,12 @@
       apt:
         name: gnupg
         state: present
+
+    - name: Import de MySQL APT GPG key
+      apt_key:
+        url: https://repo.mysql.com/RPM-GPG-KEY-mysql
+        state: present
+        
     - name: Ajout MySQL APT repository
       apt_repository:
         repo: "deb http://repo.mysql.com/apt/debian {{ ansible_distribution_release | lower }} mysql-apt-config"
@@ -21,10 +27,7 @@
         filename: mysql-apt-config
 
 
-    - name: Import de MySQL APT GPG key
-      apt_key:
-        url: https://repo.mysql.com/RPM-GPG-KEY-mysql
-        state: present
+    
 
     - name: Update apt cache
       apt:
