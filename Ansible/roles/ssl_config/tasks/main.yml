@@ -1,0 +1,41 @@
+- name: Generate SSL Certificates
+  command: ./generate_ssl_cert.sh
+  args:
+    chdir: "{{ role_path }}/files"
+  register: ssl_cert_output
+  changed_when: false
+
+- name: Copy SSL Certificates to Apache2
+  copy:
+    src: "{{ role_path }}/files/{{ ssl_cert_file }}"
+    dest: "/etc/apache2/{{ ssl_cert_file }}"
+    mode: 0600
+    owner: root
+    group: root
+  notify:
+    - Restart Apache2
+
+- name: Copy SSL Key to Apache2
+  copy:
+    src: "{{ role_path }}/files/{{ ssl_key_file }}"
+    dest: "/etc/apache2/{{ ssl_key_file }}"
+    mode: 0600
+    owner: root
+    group: root
+  notify:
+    - Restart Apache2
+
+- name: Configure Apache2 for SSL
+  template:
+    src: default-ssl.conf.j2
+    dest: "/etc/apache2/sites-available/default-ssl.conf"
+    owner: root
+    group: root
+    mode: 0644
+  notify:
+    - Restart Apache2
+
+- name: Enable SSL module
+  command: a2enmod ssl
+  notify:
+    - Restart Apache2
