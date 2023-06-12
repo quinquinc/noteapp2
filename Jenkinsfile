@@ -43,5 +43,20 @@ pipeline {
         }
       }
     }
+
+    stage('Backup BDD') {
+      agent { node { label 'ansible'} }
+      environment {
+        // Définit les variables d'environnement pour l'utilisateur distant et les informations d'authentification SSH
+        remoteUser = 'admin'
+        sshKey = credentials('ansible-credentials')
+      }      
+      steps {
+        // Exécute les commandes Ansible pour déployer les playbooks sur l'agent distant
+        withEnv(["ANSIBLE_CONFIG=Ansible/ansible.cfg"]) {
+          sh "ansible-playbook -i Ansible/inventory Ansible/auto_backup.yml"
+        }
+      }
+    }
   }
 }

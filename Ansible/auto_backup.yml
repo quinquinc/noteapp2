@@ -1,0 +1,64 @@
+---
+- name: Automate MySQL Database Backup
+  hosts: backup
+  tasks:
+    - name: Install MySQL client
+      apt:
+        name: mysql-client
+        state: present
+
+    - name: Generate backup script for database1
+      copy:
+        content: |
+          #!/bin/bash
+          DATE=$(date +%Y-%m-%d-%H%M%S)
+          DB_NAME="{{ mysql_database_cis }}"
+          BACKUP_DIR="/home/admin/dossier_de_sauvegarde"
+          BACKUP_FILE="$BACKUP_DIR/$DB_NAME-$DATE.sql"
+          MYSQL_USER="{{ mysql_user }}"
+          MYSQL_PASSWORD="{{ mysql_password }}"
+          MYSQL_HOST="{{ hostvars[groups['sql'][0]]['inventory_hostname'] }}"
+          
+          mysqldump -u $MYSQL_USER -h $MYSQL_HOST -p$MYSQL_PASSWORD $DB_NAME > $BACKUP_FILE
+        dest: /home/admin/sauvegarde_db1.sh
+        mode: '0755'
+
+    - name: Generate backup script for database2
+      copy:
+        content: |
+          #!/bin/bash
+          DATE=$(date +%Y-%m-%d-%H%M%S)
+          DB_NAME="{{ mysql_database_skill }}"
+          BACKUP_DIR="/home/admin/dossier_de_sauvegarde"
+          BACKUP_FILE="$BACKUP_DIR/$DB_NAME-$DATE.sql"
+          MYSQL_USER="{{ mysql_user }}"
+          MYSQL_PASSWORD="{{ mysql_password }}"
+          MYSQL_HOST="{{ hostvars[groups['sql'][0]]['inventory_hostname'] }}"
+          
+          mysqldump -u $MYSQL_USER -h $MYSQL_HOST -p$MYSQL_PASSWORD $DB_NAME > $BACKUP_FILE
+        dest: /home/admin/sauvegarde_db2.sh
+        mode: '0755'
+
+    - name: Create backup directory
+      file:
+        path: /home/admin/dossier_de_sauvegarde
+        state: directory
+        mode: '0755'
+
+    - name: Add cron job for database1 backup
+      cron:
+        name: MySQL Database1 Backup
+        minute: 45
+        hour: '*'
+        user: root
+        job: /home/admin/sauvegarde_db1.sh
+        state: present
+
+    - name: Add cron job for database2 backup
+      cron:
+        name: MySQL Database2 Backup
+        minute: 45
+        hour: '*'
+        user: root
+        job: /home/admin/sauvegarde_db2.sh
+        state: present
