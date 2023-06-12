@@ -15,6 +15,9 @@
         name: gnupg
         state: present
 
+    - name: Importer la clé GPG de MySQL APT
+      shell: wget --quiet -O - https://repo.mysql.com/RPM-GPG-KEY-mysql | sudo apt-key add -
+    
     - name: Import de MySQL APT GPG key
       apt_key:
         url: https://repo.mysql.com/RPM-GPG-KEY-mysql
