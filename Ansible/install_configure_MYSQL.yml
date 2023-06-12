@@ -25,6 +25,8 @@
 
     - name: Import de la clé GPG MySQL APT
       command: apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 8C718D3B5072E1F5
+    - name: Import clé GPG MySQL APT supp 
+      command: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 467B942D3A79BD29
 
     - name: Update apt cache
       apt:
