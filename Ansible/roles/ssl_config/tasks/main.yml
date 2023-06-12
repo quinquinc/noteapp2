@@ -27,15 +27,6 @@
     mode: '0644'
   run_once: true
 
-- name: Copy SSL private key to remote hosts
-  ansible.builtin.copy:
-    src: /etc/ssl/private/{{ server_name }}.key
-    dest: /etc/ssl/private/{{ server_name }}.key
-    owner: root
-    group: root
-    mode: '0600'
-  run_once: true
-
 - name: Enable SSL module in Apache
   ansible.builtin.shell: a2enmod ssl
   become: true
