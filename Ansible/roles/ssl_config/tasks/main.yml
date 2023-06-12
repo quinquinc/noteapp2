@@ -9,15 +9,13 @@
     mode: '0600'
   register: private_key
 
-- debug:
-    var: private_key
-
 - name: Generate self-signed SSL certificate
   openssl_certificate:
     path: /etc/ssl/certs/app.crt
-    privatekey: "{{ private_key.filename }}"
+    privatekey_path: "{{ private_key.filename }}"
     provider: selfsigned
     backup: yes
+
 
 
 - name: Copy SSL certificate to remote hosts
