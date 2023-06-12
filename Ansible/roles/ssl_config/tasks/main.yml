@@ -3,7 +3,6 @@
   ansible.builtin.openssl_certificate:
     path: /etc/ssl/certs/{{ server_name }}.crt
     privatekey_path: /etc/ssl/private/{{ server_name }}.key
-    common_name: "{{ server_name }}"
     owner: root
     group: root
     mode: '0644'
