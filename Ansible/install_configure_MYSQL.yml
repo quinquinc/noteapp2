@@ -33,7 +33,7 @@
 
     - name: Import MySQL APT GPG key
       apt_key:
-        url: https://dev.mysql.com/doc/refman/8.0/en/linux-installation-apt-repo.html
+        url: https://raw.githubusercontent.com/mysql/mysql-apt-config/master/mysql-apt-config.gpg
         state: present
 
     - name: Update apt cache
