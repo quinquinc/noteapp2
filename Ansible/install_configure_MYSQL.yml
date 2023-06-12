@@ -50,6 +50,28 @@
         state: started
         enabled: true
 
+    - name: Install Pip3
+      apt:
+        name: python3-pip
+        state: present
+
+    - name: Install libmysql-dev
+      apt:
+        name: libmysqlclient-dev
+        state: present
+
+    - name: Install requirements
+      pip: 
+        name: 
+          - tqdm
+          - numpy
+          - pandas
+          - openpyxl
+          - mysql-connector-python
+          - PyMySQL
+          - mysqlclient
+        state: present
+
     - name: Définir MySQL root password
       mysql_user:
         name: root
@@ -75,27 +97,6 @@
     - name: Créer 2ème MySQL database
       mysql_db:
         name: skillmatrix
-        state: present
-
-    - name: Install Pip3
-      apt:
-        name: python3-pip
-        state: present
-    - name: Install libmysql-dev
-      apt:
-        name: libmysqlclient-dev
-        state: present
-
-    - name: Install requirements
-      pip: 
-        name: 
-          - tqdm
-          - numpy
-          - pandas
-          - openpyxl
-          - mysql-connector-python
-          - PyMySQL
-          - mysqlclient
         state: present
 
     - name: Install Git
