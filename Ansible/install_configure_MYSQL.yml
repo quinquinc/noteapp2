@@ -15,25 +15,17 @@
         name: gnupg
         state: present
 
+
     - name: Ajout MySQL APT repository
       apt_repository:
-        repo: "deb [trusted=yes] http://repo.mysql.com/apt/{{ ansible_distribution | lower }} {{ ansible_distribution_release | lower }} mysql-apt-config"
+        repo: "deb http://repo.mysql.com/apt/{{ ansible_distribution | lower }}/ {{ ansible_distribution_release | lower }} mysql-apt-config"
         state: present
         filename: mysql-apt-config
 
-
-    - name: Import de la clé GPG MySQL APT
-      command: apt-key adv --recv-keys --keyserver keyserver.ubuntu.com 8C718D3B5072E1F5
-    - name: Import clé GPG MySQL APT supp 
-      command: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 467B942D3A79BD29
-
-    - name: Update apt cache
-      apt:
-        update_cache: yes
-
-
-
-    
+    - name: Import de MySQL APT GPG key
+      apt_key:
+        url: https://repo.mysql.com/RPM-GPG-KEY-mysql
+        state: present
 
     - name: Update apt cache
       apt:
@@ -41,7 +33,7 @@
 
     - name: Install MySQL Server package
       apt:
-        name: default-mysql-server
+        name: mysql-server
         state: present
 
     - name: Start MySQL 
@@ -50,14 +42,14 @@
         state: started
         enabled: true
 
+    
     - name: Install Pip3
       apt:
         name: python3-pip
         state: present
-
     - name: Install libmysql-dev
       apt:
-        name: default-libmysqlclient-dev
+        name: libmysqlclient-dev
         state: present
 
     - name: Install requirements
@@ -98,6 +90,7 @@
       mysql_db:
         name: skillmatrix
         state: present
+
 
     - name: Install Git
       apt:
