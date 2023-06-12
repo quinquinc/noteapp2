@@ -2,11 +2,15 @@
 - name: Generate self-signed SSL certificate private key
   ansible.builtin.openssl_privatekey:
     path: /etc/ssl/private/{{ server_name }}.key
+    type: RSA
     size: 2048
     owner: root
     group: root
     mode: '0600'
   register: private_key
+
+- debug:
+    var: private_key
 
 - name: Generate self-signed SSL certificate
   ansible.builtin.openssl_certificate:
