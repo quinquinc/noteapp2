@@ -6,7 +6,7 @@
     owner: root
     group: root
     mode: '0644'
-    provider: openssl
+    provider: selfsigned 
     state: present
   register: ssl_certificate
 
