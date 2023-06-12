@@ -11,8 +11,10 @@
   become: true
   vars_files:
     - vars.yml
-  roles: 
-    - geerlingguy.mysql
+  roles:
+    - name: geerlingguy.mysql
+      vars:
+        mysql_package: mysql-server
 
   tasks:
     - name: Mise à jour du cache des paquets 1
