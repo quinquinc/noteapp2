@@ -11,10 +11,10 @@
   become: true
   vars_files:
     - vars.yml
-  roles:
-    - name: geerlingguy.mysql
-      vars:
-        mysql_package: mysql-server
+  # roles:
+  #   - name: geerlingguy.mysql
+  #     vars:
+  #       mysql_package: mysql-server
 
   tasks:
     - name: Mise à jour du cache des paquets 1
@@ -77,25 +77,25 @@
     #     login_password: ""
     #     login_unix_socket: /var/run/mysqld/mysqld.sock
 
-    - name: Create MySQL databases
-      mysql_db:
-        name: "{{ item.name }}"
-        state: present
-      loop: "{{ mysql_databases }}"
+    # - name: Create MySQL databases
+    #   mysql_db:
+    #     name: "{{ item.name }}"
+    #     state: present
+    #   loop: "{{ mysql_databases }}"
 
-    - name: Create MySQL user
-      mysql_user:
-        name: "{{ item.name }}"
-        password: "{{ item.password }}"
-        priv: "{{ item.priv }}"
-        state: present
-        host: "%"
-      loop: "{{ mysql_users }}"
+    # - name: Create MySQL user
+    #   mysql_user:
+    #     name: "{{ item.name }}"
+    #     password: "{{ item.password }}"
+    #     priv: "{{ item.priv }}"
+    #     state: present
+    #     host: "%"
+    #   loop: "{{ mysql_users }}"
         
-    - name: Start MySQL service
-      service:
-        name: mysql
-        state: started
+    # - name: Start MySQL service
+    #   service:
+    #     name: mysql
+    #     state: started
 
     # - name: Secure MySQL installation
     #   debconf:
@@ -130,6 +130,58 @@
     #     password: "{{ mysql_password }}"
     #     priv: "*.*:ALL,GRANT"
     #     state: present
+
+    - name: Add MySQL APT repository
+      apt_repository:
+        repo: "deb http://repo.mysql.com/apt/{{ ansible_distribution | lower }}/ {{ ansible_distribution_release | lower }} mysql-apt-config"
+        state: present
+        filename: mysql-apt-config
+
+    - name: Import MySQL APT GPG key
+      apt_key:
+        url: https://dev.mysql.com/doc/refman/8.0/en/checking-gpg-signature.html
+        state: present
+
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+
+    - name: Install MySQL Server package
+      apt:
+        name: mysql-server
+        state: present
+
+    - name: Start MySQL service
+      service:
+        name: mysql
+        state: started
+        enabled: true
+
+    - name: Set MySQL root password
+      debconf:
+        name: 'mysql-server'
+        question: 'mysql-server/root_password'
+        value: "{{ mysql_root_password }}"
+        vtype: 'password'
+        state: present
+
+    - name: Create MySQL user
+      mysql_user:
+        name: "{{ mysql_user }}"
+        password: "{{ mysql_password }}"
+        priv: '*.*:ALL'
+        host: '%'
+        state: present
+
+    - name: Create MySQL databases
+      mysql_db:
+        name: cis_nord_warwait
+        state: present
+
+    - name: Create another MySQL database
+      mysql_db:
+        name: skillmatrix
+        state: present
 
     - name: Install Git
       apt:
