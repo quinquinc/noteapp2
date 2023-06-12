@@ -4,7 +4,7 @@
     state: directory
 
 - name: Generate SSL Certificates
-  command: ./generate_ssl_cert.sh
+  command: /home/admin/Ansible/roles/ssl_config/files/generate_ssl_cert.sh
   args:
     chdir: "{{ role_path }}/files"
   register: ssl_cert_output
