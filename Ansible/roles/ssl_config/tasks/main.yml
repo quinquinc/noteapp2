@@ -6,6 +6,8 @@
     owner: root
     group: root
     mode: '0644'
+    provider: openssl
+    state: present
   register: ssl_certificate
 
 - name: Copy SSL certificate to remote hosts
