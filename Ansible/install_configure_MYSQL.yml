@@ -30,24 +30,25 @@
       debconf:
         name: mysql-apt-config
         question:
-          - "mysql-apt-config/repo-distro"
-          - "mysql-apt-config/repo-codename"
-          - "mysql-apt-config/select-server"
-          - "mysql-apt-config/enable-repo"
-          - "mysql-apt-config/repo-url"
-          - "mysql-apt-config/repo-url-suffix"
-          - "mysql-apt-config/repo-username"
-          - "mysql-apt-config/repo-password"
+          - "'mysql-apt-config/repo-distro'"
+          - "'mysql-apt-config/repo-codename'"
+          - "'mysql-apt-config/select-server'"
+          - "'mysql-apt-config/enable-repo'"
+          - "'mysql-apt-config/repo-url'"
+          - "'mysql-apt-config/repo-url-suffix'"
+          - "'mysql-apt-config/repo-username'"
+          - "'mysql-apt-config/repo-password'"
         value:
-          - "{{ ansible_distribution | lower }}"
-          - "{{ ansible_distribution_release | lower }}"
-          - "mysql-8.0"
-          - "true"
-          - "http://repo.mysql.com/apt"
-          - "/"
-          - ""
-          - ""
+          - "'{{ ansible_distribution | lower }}'"
+          - "'{{ ansible_distribution_release | lower }}'"
+          - "'mysql-apt-config'"
+          - "'true'"
+          - "'http://repo.mysql.com/apt'"
+          - "'/'"
+          - "''"
+          - "''"
         vtype: "string"
+
 
     - name: Installation de mysql-apt-config
       apt:
