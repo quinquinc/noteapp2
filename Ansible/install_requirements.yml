@@ -176,11 +176,11 @@
         state: absent
 
     - name: Modify AllowOverride in apache2.conf
-      lineinfile:
+      replace:
         path: /etc/apache2/apache2.conf
-        regex: '^<Directory /var/www/html/>'
-        insertafter: '^<Directory /var/www/html/>'
-        line: '        AllowOverride All'
+        regexp: '^(\s*<Directory /var/www/html/>)'
+        replace: '\1\n        AllowOverride All'
+        
 
     - name: désactiver site par défaut et activer app.conf
       shell: | 
