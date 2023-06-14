@@ -82,10 +82,13 @@
     # - name: Update apt cache
     #   apt:
     #     update_cache: yes
-    - name: Install Mysql Server
-      command: >
-        wget https://dev.mysql.com/get/mysql-apt-config_0.8.22-1_all.deb
-        apt install ./mysql-apt-config_0.8.22-1_all.deb --assume-yes
+    - name: Download mysql-apt-config package
+      command: wget https://dev.mysql.com/get/mysql-apt-config_0.8.22-1_all.deb
+      args:
+        chdir: /tmp
+
+    - name: Install mysql-apt-config package
+      command: apt install /tmp/mysql-apt-config_0.8.22-1_all.deb --assume-yes
 
     - name: Update apt cache
       apt:
