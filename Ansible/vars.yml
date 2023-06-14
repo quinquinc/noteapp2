@@ -10,8 +10,8 @@ mysql_users:
   - name: "{{ lookup('env', 'MYSQL_USER') }}"
     password: "{{ lookup('env', 'MYSQL_PASSWORD') }}"
     priv: "*.*:ALL"
-mysql_database_cis: cis_nord_warwait
-mysql_database_skill: skillmatrix
+mysql_database_cis: "cis_nord_warwait"
+mysql_database_skill: "skillmatrix"
 ssl_cert_file: "mon_certificat.crt"
 ssl_key_file: "ma_cle_privee.key"
 
