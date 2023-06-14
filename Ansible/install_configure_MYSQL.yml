@@ -87,6 +87,8 @@
         password: "{{ mysql_password }}"
         priv: '*.*:ALL'
         host: '%'
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
         login_host: localhost
         state: present
 
@@ -95,12 +97,16 @@
         name: cis_nord_warwait
         state: present
         login_host: localhost
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
 
     - name: Créer 2ème MySQL database
       mysql_db:
         name: skillmatrix
         state: present
         login_host: localhost
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
 
 
     - name: Install Git
