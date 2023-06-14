@@ -81,24 +81,26 @@
       command: mysql_secure_installation --use-default --password="{{ mysql_root_password }}"
 
 
-
     - name: Créer MySQL user
       mysql_user:
         name: "{{ mysql_user }}"
         password: "{{ mysql_password }}"
         priv: '*.*:ALL'
         host: '%'
+        login_host: localhost
         state: present
 
     - name: Créer MySQL databases
       mysql_db:
         name: cis_nord_warwait
         state: present
+        login_host: localhost
 
     - name: Créer 2ème MySQL database
       mysql_db:
         name: skillmatrix
         state: present
+        login_host: localhost
 
 
     - name: Install Git
