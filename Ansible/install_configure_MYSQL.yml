@@ -57,7 +57,7 @@
         state: present
     - name: Install libmysql-dev
       apt:
-        name: default-libmysqlclient-dev
+        name: libmysqlclient-dev
         state: present
 
     - name: Install requirements
