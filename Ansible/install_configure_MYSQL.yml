@@ -95,7 +95,8 @@
         login_host: localhost
         login_port: 3306
         become: yes
-      when: "'Secure MySQL installation' in ansible_run_tags.results[0].skipped_tasks"
+      when: "'Secure MySQL installation' in ansible_run_tags.skipped"
+
 
 
 
