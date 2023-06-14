@@ -4,6 +4,8 @@
   become: true
   vars_files:
     - vars.yml
+  roles:
+    - { role: cowops.debian-mysql }
  
   tasks:
     - name: Mise à jour du cache des paquets 1
@@ -82,22 +84,22 @@
     # - name: Update apt cache
     #   apt:
     #     update_cache: yes
-    - name: Download mysql-apt-config package
-      command: wget https://dev.mysql.com/get/mysql-apt-config_0.8.22-1_all.deb
-      args:
-        chdir: /tmp
+    # - name: Download mysql-apt-config package
+    #   command: wget https://dev.mysql.com/get/mysql-apt-config_0.8.22-1_all.deb
+    #   args:
+    #     chdir: /tmp
 
-    - name: Install mysql-apt-config package
-      command: apt install /tmp/mysql-apt-config_0.8.22-1_all.deb --assume-yes
+    # - name: Install mysql-apt-config package
+    #   command: apt install /tmp/mysql-apt-config_0.8.22-1_all.deb --assume-yes -y 
 
-    - name: Update apt cache
-      apt:
-        update_cache: yes  
+    # - name: Update apt cache
+    #   apt:
+    #     update_cache: yes  
 
-    - name: Install MySQL Server package
-      apt:
-        name: mysql-server
-        state: present
+    # - name: Install MySQL Server package
+    #   apt:
+    #     name: mysql-server
+    #     state: present
 
 
     - name: Start MySQL 
