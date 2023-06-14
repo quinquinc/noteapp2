@@ -166,10 +166,3 @@
         name: apache2
         state: restarted
  
-- name: Installer, configurer et déployer app.conf
-  hosts: sql
-  become: true
-  tasks:
-  - name: install debian-mysql role 
-    command: ansible-galaxy install cowops.debian-mysql
-
