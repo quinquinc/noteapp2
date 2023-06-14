@@ -151,55 +151,6 @@
       args:
         executable: /bin/bash
       become: true
-
-    - name: mv .htaccess 
-      command: mv /var/www/html/etc/.htaccess /var/www/html/.htaccess
-      args:
-        creates: /var/www/html/.htaccess
-      register: move_result
-
-    - name: Rempalace all denied/granted .htaccess 
-      replace:
-        path: /var/www/html/.htaccess
-        regexp: '^Require all denied$'
-        replace: 'Require all granted'
-
-    - name: Ajout DirectoryIndex à .htaccess 
-      lineinfile:
-        path: /var/www/html/.htaccess
-        line: 'DirectoryIndex warwait.php'
-        state: present
-
-    - name: Supprimer index.html 
-      file:
-        path: /var/www/html/index.html
-        state: absent
-
-    - name: Modify AllowOverride in apache2.conf
-      replace:
-        path: /etc/apache2/apache2.conf
-        regexp: |
-          <Directory /var/www/html/>
-                  Options Indexes FollowSymLinks
-                  AllowOverride None
-                  Require all granted
-          </Directory>
-
-        replace: |
-          <Directory /var/www/html/>
-              Options Indexes FollowSymLinks
-              AllowOverride All
-              Require all granted
-          </Directory>
-        
-
-    - name: désactiver site par défaut et activer app.conf
-      shell: | 
-        a2dissite 000-default.conf
-        a2ensite app.conf
-      args:
-        executable: /bin/bash
-      become: true
       
     - name: Restart Apache
       service:
