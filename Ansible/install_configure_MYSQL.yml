@@ -15,89 +15,20 @@
         name: gnupg
         state: present
 
-    # - name: Import de MySQL APT GPG key
-    #   apt_key:
-    #     url: https://repo.mysql.com/RPM-GPG-KEY-mysql
-    #     state: present
-
-    # - name: Ajout MySQL APT repository
-    #   apt_repository:
-    #     repo: "deb https://repo.mysql.com/apt/{{ ansible_distribution | lower }}/ {{ ansible_distribution_release | lower }} mysql-8.0"
-    #     state: present
-    #     filename: mysql-apt-config
-
-    # - name: Configuration des sélections debconf pour mysql-apt-config
-    #   debconf:
-    #     name: mysql-apt-config
-    #     question:
-    #       - "'mysql-apt-config/repo-distro'"
-    #       - "'mysql-apt-config/repo-codename'"
-    #       - "'mysql-apt-config/select-server'"
-    #       - "'mysql-apt-config/enable-repo'"
-    #       - "'mysql-apt-config/repo-url'"
-    #       - "'mysql-apt-config/repo-url-suffix'"
-    #       - "'mysql-apt-config/repo-username'"
-    #       - "'mysql-apt-config/repo-password'"
-    #     value:
-    #       - "'{{ ansible_distribution | lower }}'"
-    #       - "'{{ ansible_distribution_release | lower }}'"
-    #       - "'mysql-apt-config'"
-    #       - "'true'"
-    #       - "'http://repo.mysql.com/apt'"
-    #       - "'/'"
-    #       - "''"
-    #       - "''"
-    #     vtype: "string"
-
-
-    # - name: Installation de mysql-apt-config
-    #   apt:
-    #     name: mysql-apt-config
-    #     state: present
-    #     update_cache: yes
-
-    # - name: Update apt cache
-    #   apt:
-    #     update_cache: yes
-
-    # - name: Install MySQL Server package
-    #   apt:
-    #     name: mysql-8.0
-    #     state: present
-
-    # - name: Import de MySQL APT GPG key
-    #   apt_key:
-    #     url: https://repo.mysql.com/RPM-GPG-KEY-mysql
-    #     state: present
-
-    # - name: import clé manquante
-    #   command: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 467B942D3A79BD29
-
-    # - name: Ajout MySQL APT repository
-    #   apt_repository:
-    #     repo: "deb https://repo.mysql.com/apt/{{ ansible_distribution | lower }}/ {{ ansible_distribution_release | lower }} mysql-apt-config"
-    #     state: present
-    #     filename: mysql-apt-config
-
-    # - name: Update apt cache
-    #   apt:
-    #     update_cache: yes
-    # - name: Download mysql-apt-config package
-    #   command: wget https://dev.mysql.com/get/mysql-apt-config_0.8.22-1_all.deb
-    #   args:
-    #     chdir: /tmp
-
-    # - name: Install mysql-apt-config package
-    #   command: apt install /tmp/mysql-apt-config_0.8.22-1_all.deb --assume-yes -y 
-
-    # - name: Update apt cache
-    #   apt:
-    #     update_cache: yes  
-
-    - name: Install MySQL Server package
-      apt:
-        name: default-mysql-server
+    - name: Ajout des dépôts MySQL APT
+      apt_repository:
+        repo: "deb http://repo.mysql.com/apt/debian/ buster mysql-apt-config"
         state: present
+        filename: mysql-apt-config
+
+    - name: Import de la clé GPG MySQL APT
+      apt_key:
+        url: https://repo.mysql.com/RPM-GPG-KEY-mysql
+        state: present
+
+    - name: Mise à jour du cache apt
+      apt:
+        update_cache: yes
 
 
     - name: Start MySQL 
