@@ -23,6 +23,8 @@
         url: https://keys.openpgp.org/vks/v1/by-fingerprint/A4A9406876FCBD3C456770C88C718D3B5072E1F5
         state: present
 
+    - name: Import nouvelle clé
+      command: apt-key adv --keyserver keyserver.ubuntu.com --recv-keys 467B942D3A79BD29
 
     - name: Add MySQL APT repository
       apt_repository:
