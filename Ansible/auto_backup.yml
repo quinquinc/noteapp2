@@ -1,6 +1,7 @@
 ---
 - name: Automate MySQL Database Backup
   hosts: backup
+  become: true
   tasks:
     - name: Install MySQL client
       apt:
