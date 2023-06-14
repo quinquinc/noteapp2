@@ -95,7 +95,8 @@
         login_host: localhost
         login_port: 3306
         become: yes
-      when: mysql_secure_install.changed
+      when: "'Secure MySQL installation' in ansible_run_tags.results[0].skipped_tasks"
+
 
 
     - name: Créer MySQL user
