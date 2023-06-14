@@ -15,6 +15,10 @@
         name: gnupg
         state: present
 
+    - name: Import de MySQL APT GPG key
+      apt_key:
+        url: https://repo.mysql.com/RPM-GPG-KEY-mysql
+        state: present
 
     - name: Ajout MySQL APT repository
       apt_repository:
@@ -22,10 +26,7 @@
         state: present
         filename: mysql-apt-config
 
-    - name: Import de MySQL APT GPG key
-      apt_key:
-        url: https://repo.mysql.com/RPM-GPG-KEY-mysql
-        state: present
+    
 
     - name: Update apt cache
       apt:
@@ -33,7 +34,7 @@
 
     - name: Install MySQL Server package
       apt:
-        name: mysql-server
+        name: mysql-8.0
         state: present
 
     - name: Start MySQL 
