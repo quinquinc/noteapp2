@@ -72,13 +72,16 @@
           - mysqlclient
         state: present
 
-    - name: Définir MySQL root password
-      mysql_user:
-        name: root
-        password: "{{ lookup('env', 'MYSQL_ROOT_PASSWORD') }}"
-        host: localhost
-        login_unix_socket: /var/run/mysqld/mysqld.sock
-        state: present
+    - name: Secure MySQL installation
+      become: true
+      vars_prompt:
+        - name: mysql_root_password
+          prompt: "Enter MySQL root password"
+          private: yes
+      environment:
+        MYSQL_PWD: "{{ mysql_root_password }}"
+      command: mysql_secure_installation --use-default --password="{{ mysql_root_password }}"
+
 
 
     - name: Créer MySQL user
