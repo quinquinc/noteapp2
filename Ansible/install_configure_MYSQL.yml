@@ -82,6 +82,21 @@
         MYSQL_PWD: "{{ mysql_root_password }}"
       command: mysql_secure_installation --use-default --password="{{ mysql_root_password }}"
 
+    - name: Autoriser les connexions à distance pour l'utilisateur 'root'
+      mysql_user:
+        name: root
+        host: "{{ ansible_host }}"
+        password: "{{ mysql_root_password }}"
+        login_user: root
+        login_password: "{{ mysql_root_password }}"
+        login_unix_socket: /var/run/mysqld/mysqld.sock
+        state: present
+        check_implicit_admin: yes
+        login_host: localhost
+        login_port: 3306
+        become: yes
+      when: mysql_secure_install.changed
+
 
     - name: Créer MySQL user
       mysql_user:
