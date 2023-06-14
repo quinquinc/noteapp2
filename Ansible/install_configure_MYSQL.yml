@@ -4,8 +4,6 @@
   become: true
   vars_files:
     - vars.yml
-  roles:
-    - { role: cowops.debian-mysql }
  
   tasks:
     - name: Mise à jour du cache des paquets 1
@@ -96,10 +94,10 @@
     #   apt:
     #     update_cache: yes  
 
-    # - name: Install MySQL Server package
-    #   apt:
-    #     name: mysql-server
-    #     state: present
+    - name: Install MySQL Server package
+      apt:
+        name: default-mysql-server
+        state: present
 
 
     - name: Start MySQL 
