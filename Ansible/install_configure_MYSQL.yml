@@ -15,18 +15,39 @@
         name: gnupg
         state: present
 
-    - name: Import de MySQL APT GPG key
-      apt_key:
-        url: https://repo.mysql.com/RPM-GPG-KEY-mysql
-        state: present
+    # - name: Import de MySQL APT GPG key
+    #   apt_key:
+    #     url: https://repo.mysql.com/RPM-GPG-KEY-mysql
+    #     state: present
 
-    - name: Ajout MySQL APT repository
-      apt_repository:
-        repo: "deb https://repo.mysql.com/apt/{{ ansible_distribution | lower }}/ {{ ansible_distribution_release | lower }} mysql-8.0"
-        state: present
-        filename: mysql-apt-config
+    # - name: Ajout MySQL APT repository
+    #   apt_repository:
+    #     repo: "deb https://repo.mysql.com/apt/{{ ansible_distribution | lower }}/ {{ ansible_distribution_release | lower }} mysql-8.0"
+    #     state: present
+    #     filename: mysql-apt-config
 
-    
+    - name: Installation de mysql-apt-config
+      apt:
+        name: mysql-apt-config
+        state: present
+        update_cache: yes
+        force_apt_get: yes
+        install_recommends: no
+        force: yes
+        autoremove: yes
+        default_release: ""
+        debconf_mode: "noninteractive"
+        debconf_selections:
+          mysql-apt-config:
+            mysql-apt-config/repo-distro: "{{ ansible_distribution | lower }}"
+            mysql-apt-config/repo-codename: "{{ ansible_distribution_release | lower }}"
+            mysql-apt-config/select-server: "mysql-8.0"
+            mysql-apt-config/enable-repo: "true"
+            mysql-apt-config/repo-url: "http://repo.mysql.com/apt"
+            mysql-apt-config/repo-url-suffix: "/"
+            mysql-apt-config/repo-username: ""
+            mysql-apt-config/repo-password: ""
+
 
     - name: Update apt cache
       apt:
