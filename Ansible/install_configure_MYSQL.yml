@@ -4,7 +4,10 @@
   become: true
   vars_files:
     - vars.yml
- 
+  vars_prompt:
+    - name: mysql_root_password
+      prompt: "Enter MySQL root password"
+      private: yes
   tasks:
     - name: Mise à jour du cache des paquets 1
       apt:
@@ -72,12 +75,7 @@
           - mysqlclient
         state: present
 
-    - name: Secure MySQL installation
-      become: true
-      vars_prompt:
-        - name: mysql_root_password
-          prompt: "Enter MySQL root password"
-          private: yes
+    - name: Secure MySQL installation       
       environment:
         MYSQL_PWD: "{{ mysql_root_password }}"
       command: mysql_secure_installation --use-default --password="{{ mysql_root_password }}"
