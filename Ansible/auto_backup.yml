@@ -9,6 +9,7 @@
       apt:
         name: mysql-client
         state: present
+        update_cache: yes
 
     - name: Generate backup script for database1
       copy:
