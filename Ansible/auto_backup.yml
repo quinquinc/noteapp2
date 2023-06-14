@@ -7,7 +7,7 @@
   tasks:
     - name: Install MySQL client
       apt:
-        name: mysql-client
+        name: default-mysql-client
         state: present
         update_cache: yes
 
