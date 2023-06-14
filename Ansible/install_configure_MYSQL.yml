@@ -26,6 +26,11 @@
         url: https://repo.mysql.com/RPM-GPG-KEY-mysql
         state: present
 
+    - name: Installation de MySQL Server
+      apt:
+        name: mysql-server
+        state: present
+
     - name: Mise à jour du cache apt
       apt:
         update_cache: yes
