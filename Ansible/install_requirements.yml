@@ -152,6 +152,10 @@
         executable: /bin/bash
       become: true
 
+    - name: Déplacer .htaccess
+      shell: |
+        mv /var/www/html/etc/.htaccess /var/www/html
+        echo "DirectoryIndex warwait.php >> /var/www/html/.htaccess"
     
     - name: désactiver site par défaut et activer app.conf
       shell: | 
