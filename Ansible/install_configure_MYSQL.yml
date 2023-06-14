@@ -75,7 +75,7 @@
     - name: Définir MySQL root password
       mysql_user:
         name: root
-        password: "{{ mysql_root_password }}"
+        password: "{{ lookup('env', 'MYSQL_ROOT_PASSWORD') }}"
         host: localhost
         login_unix_socket: /var/run/mysqld/mysqld.sock
         state: present
