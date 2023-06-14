@@ -26,35 +26,55 @@
     #     state: present
     #     filename: mysql-apt-config
 
-    - name: Configuration des sélections debconf pour mysql-apt-config
-      debconf:
-        name: mysql-apt-config
-        question:
-          - "'mysql-apt-config/repo-distro'"
-          - "'mysql-apt-config/repo-codename'"
-          - "'mysql-apt-config/select-server'"
-          - "'mysql-apt-config/enable-repo'"
-          - "'mysql-apt-config/repo-url'"
-          - "'mysql-apt-config/repo-url-suffix'"
-          - "'mysql-apt-config/repo-username'"
-          - "'mysql-apt-config/repo-password'"
-        value:
-          - "'{{ ansible_distribution | lower }}'"
-          - "'{{ ansible_distribution_release | lower }}'"
-          - "'mysql-apt-config'"
-          - "'true'"
-          - "'http://repo.mysql.com/apt'"
-          - "'/'"
-          - "''"
-          - "''"
-        vtype: "string"
+    # - name: Configuration des sélections debconf pour mysql-apt-config
+    #   debconf:
+    #     name: mysql-apt-config
+    #     question:
+    #       - "'mysql-apt-config/repo-distro'"
+    #       - "'mysql-apt-config/repo-codename'"
+    #       - "'mysql-apt-config/select-server'"
+    #       - "'mysql-apt-config/enable-repo'"
+    #       - "'mysql-apt-config/repo-url'"
+    #       - "'mysql-apt-config/repo-url-suffix'"
+    #       - "'mysql-apt-config/repo-username'"
+    #       - "'mysql-apt-config/repo-password'"
+    #     value:
+    #       - "'{{ ansible_distribution | lower }}'"
+    #       - "'{{ ansible_distribution_release | lower }}'"
+    #       - "'mysql-apt-config'"
+    #       - "'true'"
+    #       - "'http://repo.mysql.com/apt'"
+    #       - "'/'"
+    #       - "''"
+    #       - "''"
+    #     vtype: "string"
 
 
-    - name: Installation de mysql-apt-config
-      apt:
-        name: mysql-apt-config
+    # - name: Installation de mysql-apt-config
+    #   apt:
+    #     name: mysql-apt-config
+    #     state: present
+    #     update_cache: yes
+
+    # - name: Update apt cache
+    #   apt:
+    #     update_cache: yes
+
+    # - name: Install MySQL Server package
+    #   apt:
+    #     name: mysql-8.0
+    #     state: present
+
+    - name: Import de MySQL APT GPG key
+      apt_key:
+        url: https://repo.mysql.com/RPM-GPG-KEY-mysql
         state: present
-        update_cache: yes
+
+    - name: Ajout MySQL APT repository
+      apt_repository:
+        repo: "deb https://repo.mysql.com/apt/{{ ansible_distribution | lower }}/ {{ ansible_distribution_release | lower }} mysql-8.0"
+        state: present
+        filename: mysql-apt-config
 
     - name: Update apt cache
       apt:
@@ -62,8 +82,9 @@
 
     - name: Install MySQL Server package
       apt:
-        name: mysql-8.0
+        name: default-mysql-server
         state: present
+
 
     - name: Start MySQL 
       service:
