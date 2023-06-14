@@ -15,18 +15,25 @@
         name: gnupg
         state: present
 
-    - name: Ajout des dépôts MySQL APT
-      apt_repository:
-        repo: "deb http://repo.mysql.com/apt/debian/ buster mysql-apt-config"
-        state: present
-        filename: mysql-apt-config
-
-    - name: Import de la clé GPG MySQL APT
+    - name: Import MySQL APT GPG key
       apt_key:
-        url: https://repo.mysql.com/RPM-GPG-KEY-mysql
+        url: https://dev.mysql.com/doc/mysql-apt-key.pub.gpg
         state: present
 
-    - name: Installation de MySQL Server
+    - name: Add MySQL APT repository
+      apt_repository:
+        repo: "deb http://repo.mysql.com/apt/debian/ buster mysql-8.0"
+        state: present
+
+    - name: Set debconf selection for MySQL Server
+      debconf:
+        name: mysql-apt-config
+        question: "mysql-apt-config/repo-distro"
+        value: "mysql"
+        vtype: select
+      become: yes
+
+    - name: Install MySQL Server package
       apt:
         name: mysql-server
         state: present
