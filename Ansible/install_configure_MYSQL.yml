@@ -203,22 +203,22 @@
         path: /var/www/html/index.html
         state: absent
 
-    - name: Modify AllowOverride in apache2.conf
-      replace:
-        path: /etc/apache2/apache2.conf
-        regexp: |
-          <Directory /var/www/html/>
-                  Options Indexes FollowSymLinks
-                  AllowOverride None
-                  Require all granted
-          </Directory>
+    # - name: Modify AllowOverride in apache2.conf
+    #   replace:
+    #     path: /etc/apache2/apache2.conf
+    #     regexp: |
+    #       <Directory /var/www/html/>
+    #               Options Indexes FollowSymLinks
+    #               AllowOverride None
+    #               Require all granted
+    #       </Directory>
 
-        replace: |
-          <Directory /var/www/html/>
-              Options Indexes FollowSymLinks
-              AllowOverride All
-              Require all granted
-          </Directory>
+    #     replace: |
+    #       <Directory /var/www/html/>
+    #               Options Indexes FollowSymLinks
+    #               AllowOverride All
+    #               Require all granted
+    #       </Directory>
         
 
     - name: désactiver site par défaut et activer app.conf
@@ -228,7 +228,7 @@
       args:
         executable: /bin/bash
       become: true
-      
+
     - name: Install MySQL Client on Debian/Ubuntu
       apt:
         name: default-mysql-client

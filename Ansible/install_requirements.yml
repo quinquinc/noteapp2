@@ -84,6 +84,14 @@
         replace: 'ServerName {{ public_ip }}'
         backup: yes
 
+    - name: Replace apache2.conf with template
+      template:
+        src: apache2.conf.j2
+        dest: /etc/apache2/apache2.conf
+        owner: root
+        group: root
+        mode: 0644
+        
     - name: Ajouter ServerName dans apache2.conf
       lineinfile:
         path: /etc/apache2/apache2.conf
