@@ -17,8 +17,9 @@
 
     - name: Import MySQL APT GPG key
       apt_key:
-        url: https://dev.mysql.com/doc/mysql-apt-key.pub.gpg
+        url: https://keys.openpgp.org/vks/v1/by-fingerprint/A4A9406876FCBD3C456770C88C718D3B5072E1F5
         state: present
+
 
     - name: Add MySQL APT repository
       apt_repository:
